@@ -4,10 +4,9 @@ CFLAGS = -Wall -Wextra -g $(INCFLAGS)
 INCFLAGS = -I $(INCDIR) -I $(LFTDIR)$(INCDIR)
 INCDIR = include/
 SRCDIR = src/
-SRC = minishell.c
-SRCS = $(patsubst %, $(SRCDIR)%, $(SRC))
 OBJDIR = obj/
-OBJS = $(patsubst %.c, $(OBJDIR)%.o, $(SRC))
+OBJ = minishell.o
+OBJS = $(patsubst %, $(OBJDIR)%, $(OBJ))
 LFTDIR = libft/
 LFT = $(patsubst %, $(LFTDIR)%, libft.a)
 
@@ -28,7 +27,7 @@ re: fclean all
 $(NAME): $(OBJS) $(LFT)
 	$(CC) $(CFLAGS) -lreadline -o $@ $^
 
-$(OBJS): $(SRCS)
+$(OBJS): $(OBJDIR)%.o: $(SRCDIR)%.c
 	mkdir -p $(OBJDIR)
 	$(CC) $(CFLAGS) -o $@ -c $<
 
