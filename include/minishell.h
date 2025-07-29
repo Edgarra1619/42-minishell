@@ -2,5 +2,6 @@
 # define MINISHELL_H
 
 int	echo(char **argv);
+int	pwd(void);
 
 #endif
