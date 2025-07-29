@@ -7,7 +7,9 @@
 int		echo(char **argv);
 int		pwd(void);
 int		env(void);
+int		cd(int argc, char **argv);
 int		export(char **argv);
+int		cd(int argc, char **argv);
 void	get_env(int **varc, char **vars, char ***envp);
 char	*get_var(const char *var);
 int		set_var(const char *var);
