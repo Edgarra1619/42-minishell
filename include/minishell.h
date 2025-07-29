@@ -1,7 +1,12 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-int	echo(char **argv);
-int	pwd(void);
+# define VAR_MAX 5120
+# define ENV_MAX 1024
+
+int		echo(char **argv);
+int		pwd(void);
+int		env(void);
+void	get_env(int **varc, char **vars, char ***envp);
 
 #endif
