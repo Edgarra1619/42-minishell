@@ -38,7 +38,7 @@ char	*get_var(const char *const key)
 	{
 		if (key_len == get_key_len(*envp) && !ft_strncmp(key, *envp, key_len))
 			return (*envp + key_len + 1);
-		envp++;
+		++envp;
 	}
 	return (NULL);
 }
@@ -46,23 +46,51 @@ char	*get_var(const char *const key)
 int	set_var(const char *const var)
 {
 	int			*varc;
-	char		*varv;
+	char		*vars;
 	char		**envp;
 	const int	key_len = get_key_len(var);
 
-	get_env(&varc, &varv, &envp);
+	get_env(&varc, &vars, &envp);
 	if (*varc >= ENV_MAX || !ft_strchr(var, '='))
 		return (1);
 	while (*envp && ft_strncmp(*envp, var, key_len + 1))
 		++envp;
 	if (!*envp)
 	{
-		while (*varv)
-			varv += VAR_MAX;
-		*envp = varv;
+		while (*vars)
+			vars += VAR_MAX;
+		*envp = vars;
 		++*varc;
 	}
 	ft_strlcpy(*envp, var, VAR_MAX);
+	return (0);
+}
+
+int	remove_var(const char *const key)
+{
+	int			*varc;
+	char		*vars;
+	char		**envp;
+	const int	key_len = ft_strlen(key);
+
+	get_env(&varc, &vars, &envp);
+	while (*envp)
+	{
+		if (key_len == get_key_len(*envp) && !ft_strncmp(key, *envp, key_len))
+			break ;
+		++envp;
+	}
+	if (!*envp)
+		return (1);
+	**envp = '\0';
+	*envp = NULL;
+	--*varc;
+	while (envp[1])
+	{
+		*envp = envp[1];
+		envp[1] = NULL;
+		++envp;
+	}
 	return (0);
 }
 
