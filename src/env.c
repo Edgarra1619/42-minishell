@@ -28,15 +28,15 @@ void	get_env(int **varc, char **vars, char ***envp)
 		*envp = s_envp;
 }
 
-char	*get_var(const char *const var)
+char	*get_var(const char *const key)
 {
 	char		**envp;
-	const int	key_len = get_key_len(var);
+	const int	key_len = ft_strlen(key);
 
 	get_env(NULL, NULL, &envp);
 	while (*envp)
 	{
-		if (!ft_strncmp(*envp, var, key_len) && (*envp)[key_len] == '=')
+		if (key_len == get_key_len(*envp) && !ft_strncmp(key, *envp, key_len))
 			return (*envp + key_len + 1);
 		envp++;
 	}
