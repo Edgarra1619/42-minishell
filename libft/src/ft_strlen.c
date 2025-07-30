@@ -18,6 +18,16 @@ size_t	ft_strlen(const char *s)
 
 	i = 0;
 	while (s[i])
-		i++;
+		++i;
+	return (i);
+}
+
+size_t	ft_strlen_delim(const char *s, const char delim)
+{
+	size_t	i;
+
+	i = 0;
+	while (s[i] && s[i] != delim)
+		++i;
 	return (i);
 }

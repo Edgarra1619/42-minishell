@@ -21,6 +21,7 @@ int		ft_isascii(const int c);
 int		ft_isprint(const int c);
 int		ft_isspace(const int c);
 size_t	ft_strlen(const char *s);
+size_t	ft_strlen_delim(const char *s, const char delim);
 int		ft_max(const int n1, const int n2);
 int		ft_min(const int n1, const int n2);
 int		ft_abs(const int n);
