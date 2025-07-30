@@ -14,6 +14,7 @@ void	get_env(int **varc, char **vars, char ***envp);
 char	*get_var(const char *key);
 int		set_var(const char *var);
 int		remove_var(const char *key);
+int		resolve_cmd_path(const char *cmd, char *buffer);
 int		print_error(const char *command, const char *path, const char *var,
 			const char *error);
 
