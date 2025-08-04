@@ -1,5 +1,5 @@
 NAME = minishell
-SRCS = main.c error.c echo.c pwd.c cd.c export.c unset.c env.c path.c startup.c
+SRCS = main.c error.c echo.c pwd.c cd.c export.c unset.c env.c exec.c path.c startup.c
 INCDIR = ./include/
 SRCDIR = ./src/
 OBJDIR = ./obj/
@@ -19,7 +19,6 @@ all: $(NAME)
 
 clean:
 	rm -fr $(OBJDIR)
-#	make $@ -C $(LFTDIR)
 
 fclean: clean
 	rm -f $(NAME)

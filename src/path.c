@@ -4,7 +4,7 @@
 #include <sys/stat.h>
 #include <errno.h>
 
-static int	validate_cmd_path(const char *const path);
+int	validate_file_path(const char *const path);
 static int	find_cmd_path(const char *const cmd, char *const buffer);
 
 int	resolve_cmd_path(const char *const cmd, char *const buffer)
@@ -12,9 +12,23 @@ int	resolve_cmd_path(const char *const cmd, char *const buffer)
 	if (ft_strchr(cmd, '/'))
 	{
 		ft_strlcpy(buffer, cmd, PATH_MAX);
-		return (validate_cmd_path(buffer));
+		return (validate_file_path(buffer));
 	}
 	return (find_cmd_path(cmd, buffer));
+}
+
+int	validate_file_path(const char *const path)
+{
+	struct stat	file_info;
+
+	if (stat(path, &file_info))
+		return (1);
+	else if (S_ISDIR(file_info.st_mode))
+	{
+		errno = EISDIR;
+		return (1);
+	}
+	return (0);
 }
 
 static int	find_cmd_path(const char *const cmd, char *const buffer)
@@ -28,23 +42,9 @@ static int	find_cmd_path(const char *const cmd, char *const buffer)
 		ft_strlcpy(buffer, path_var, ft_min(path_len + 1, PATH_MAX));
 		ft_strlcat(buffer, "/", PATH_MAX);
 		ft_strlcat(buffer, cmd, PATH_MAX);
-		if (!validate_cmd_path(buffer))
+		if (!validate_file_path(buffer))
 			return (0);
 		path_var += path_len + 1;
 	}
 	return (1);
-}
-
-static int	validate_cmd_path(const char *const path)
-{
-	struct stat	file_info;
-
-	if (stat(path, &file_info))
-		return (1);
-	else if (S_ISDIR(file_info.st_mode))
-	{
-		errno = EISDIR;
-		return (1);
-	}
-	return (0);
 }
