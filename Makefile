@@ -1,14 +1,17 @@
 NAME = minishell
+SRCS = minishell.c error.c echo.c pwd.c cd.c export.c unset.c env.c path.c startup.c
+INCDIR = ./include/
+SRCDIR = ./src/
+OBJDIR = ./obj/
+LFTDIR = ./libft/
+
 CC = cc
-CFLAGS = -Wall -Wextra -g $(INCFLAGS)
-INCFLAGS = -I $(INCDIR) -I $(LFTDIR)$(INCDIR)
-INCDIR = include/
-SRCDIR = src/
-OBJDIR = obj/
-OBJ = minishell.o error.o echo.o pwd.o cd.o export.o unset.o env.o path.o
-OBJS = $(patsubst %, $(OBJDIR)%, $(OBJ))
-LFTDIR = libft/
-LFT = $(patsubst %, $(LFTDIR)%, libft.a)
+CFLAGS = -Wall -Wextra -gdwarf-4 $(INCFLAGS)
+INCFLAGS = -I $(INCDIR) -I $(LFTDIR)/include/
+LIBFLAGS = -lreadline
+
+OBJS = $(patsubst %.c, $(OBJDIR)%.o, $(SRCS))
+LFT = $(LFTDIR)/libft.a
 
 .PHONY: all clean fclean re
 
@@ -16,16 +19,16 @@ all: $(NAME)
 
 clean:
 	rm -fr $(OBJDIR)
-	make $@ -C $(LFTDIR)
+#	make $@ -C $(LFTDIR)
 
 fclean: clean
 	rm -f $(NAME)
 	make $@ -C $(LFTDIR)
 
-re: fclean all
+re: clean all
 
 $(NAME): $(OBJS) $(LFT)
-	$(CC) $(CFLAGS) -lreadline -o $@ $^
+	$(CC) $(CFLAGS) $(LIBFLAGS) -o $@ $^
 
 $(OBJS): $(OBJDIR)%.o: $(SRCDIR)%.c
 	mkdir -p $(OBJDIR)
