@@ -1,4 +1,5 @@
-#include <minishell.h>
+#include <minishell/types.h>
+#include <minishell/path.h>
 #include <fcntl.h>
 
 int	redirect_fd(t_redir *const redir)
@@ -20,4 +21,3 @@ int	redirect_fd(t_redir *const redir)
 	redir->target_fd = -1;
 	return (0);
 }
-

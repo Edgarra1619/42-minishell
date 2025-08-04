@@ -1,4 +1,6 @@
-#include <minishell.h>
+#include <minishell/minishell.h>
+#include <minishell/env.h>
+#include <minishell/error.h>
 #include <libft.h>
 
 static int	validate_var(const char *const var);

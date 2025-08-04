@@ -1,8 +1,7 @@
-#include <minishell.h>
+#include <minishell/minishell.h>
 #include <libft.h>
 
-void		get_env(int **varc, char **vars, char ***envp);
-static int	get_key_len(const char *const var);
+void	get_env(int **varc, char **vars, char ***envp);
 
 int	env(void)
 {
@@ -30,13 +29,14 @@ void	get_env(int **varc, char **vars, char ***envp)
 
 char	*get_var(const char *const key)
 {
-	char		**envp;
-	const int	key_len = ft_strlen(key);
+	const size_t	key_len = ft_strlen(key);
+	char			**envp;
 
 	get_env(NULL, NULL, &envp);
 	while (*envp)
 	{
-		if (key_len == get_key_len(*envp) && !ft_strncmp(key, *envp, key_len))
+		if (key_len == ft_strlen_delim(*envp, '=')
+			&& !ft_strncmp(key, *envp, key_len))
 			return (*envp + key_len + 1);
 		++envp;
 	}
@@ -45,10 +45,10 @@ char	*get_var(const char *const key)
 
 int	set_var(const char *const var)
 {
+	const int	key_len = ft_strlen_delim(var, '=');
 	int			*varc;
 	char		*vars;
 	char		**envp;
-	const int	key_len = get_key_len(var);
 
 	get_env(&varc, &vars, &envp);
 	if (*varc >= ENV_MAX || !ft_strchr(var, '='))
@@ -68,15 +68,16 @@ int	set_var(const char *const var)
 
 int	remove_var(const char *const key)
 {
-	int			*varc;
-	char		*vars;
-	char		**envp;
-	const int	key_len = ft_strlen(key);
+	int				*varc;
+	char			*vars;
+	char			**envp;
+	const size_t	key_len = ft_strlen(key);
 
 	get_env(&varc, &vars, &envp);
 	while (*envp)
 	{
-		if (key_len == get_key_len(*envp) && !ft_strncmp(key, *envp, key_len))
+		if (key_len == ft_strlen_delim(*envp, '=')
+			&& !ft_strncmp(key, *envp, key_len))
 			break ;
 		++envp;
 	}
@@ -92,14 +93,4 @@ int	remove_var(const char *const key)
 		++envp;
 	}
 	return (0);
-}
-
-static int	get_key_len(const char *const var)
-{
-	int	i;
-
-	i = 0;
-	while (var[i] && var[i] != '=')
-		i++;
-	return (i);
 }

@@ -1,4 +1,5 @@
-#include <minishell.h>
+#include <minishell/minishell.h>
+#include <minishell/env.h>
 #include <libft.h>
 
 void	init_env(const char **envp)
