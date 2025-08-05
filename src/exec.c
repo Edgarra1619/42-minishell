@@ -1,23 +1,30 @@
 #include <minishell/types.h>
 #include <minishell/path.h>
+#include <minishell/env.h>
+#include <minishell/error.h>
+#include <libft.h>
+
+#include <stdlib.h>
 #include <fcntl.h>
+#include <unistd.h>
 
 int	redirect_fd(t_redir *const redir)
 {
+	const mode_t	open_mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
+
 	if (redir->target_fd < 0)
 	{
-		if (!redir->target_path)
+		if (!(redir->open_flags & O_WRONLY)
+			&& validate_file_path(redir->target_path))
 			return (1);
-		if ((redir->flags & O_WRONLY) && validate_file_path(redir->target_path))
-			return (1);
-		redir->target_fd = open(redir->target_path, redir->flags, redir->mode);
+		redir->target_fd = open(
+			redir->target_path, redir->open_flags, open_mode);
 		if (redir->target_fd == -1)
 			return (1);
 	}
-	if (dup2(redir->target_fd, redir->fd) == -1)
+	if (dup2(redir->target_fd, redir->source_fd) == -1)
 		return (1);
-	if (close(redir->target_fd) == -1)
-		return (1);
+	close(redir->target_fd);
 	redir->target_fd = -1;
 	return (0);
 }

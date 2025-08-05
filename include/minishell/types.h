@@ -1,19 +1,23 @@
+#include <minishell/minishell.h>
+
 #include <sys/types.h>
+#include <limits.h>
 #include <unistd.h>
 
 typedef struct s_redir
 {
-	int		fd;
+	int		source_fd;
 	int		target_fd;
 	char	*target_path;
-	int		flags;
-	mode_t	mode;
+	int		open_flags;
 }	t_redir;
 
 typedef struct s_cmd
 {
-	char	**args;
-	t_redir	*redirs;
+	char	path[PATH_MAX];
+	char	**argv;
+	int		pipe[2];
+	t_redir	redirs[REDIR_MAX];
 	pid_t	pid;
 	int		status;
 }	t_cmd;

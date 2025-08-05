@@ -7,5 +7,8 @@
 # ifndef ENV_MAX
 #  define ENV_MAX 1024
 # endif
+# ifndef REDIR_MAX
+#  define REDIR_MAX 16
+# endif
 
 #endif

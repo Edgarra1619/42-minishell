@@ -2,13 +2,13 @@
 #include <minishell/env.h>
 #include <libft.h>
 
-void	init_env(const char **envp)
+void	init_env(char **envp)
 {
 	int		*varc;
 	char	*vars;
 	char	**n_envp;
 
-	get_env(&varc, (char**) &vars, &n_envp);
+	get_env(&varc, (char **) &vars, &n_envp);
 	while (*envp)
 	{
 		n_envp[*varc] = vars + *varc * VAR_MAX;
