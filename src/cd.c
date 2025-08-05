@@ -15,13 +15,13 @@ int	cd(int argc, char **argv)
 	int			print;
 
 	if (argc > 2)
-		return (print_error("cd", NULL, NULL, "too many arguments"));
+		return (print_error("cd", NULL, "too many arguments"));
 	if (resolve_path(&path, &print))
 		return (1);
 	if (!*path)
 		return (0);
 	if (chdir(path))
-		return (print_error("cd", path, NULL, NULL));
+		return (print_error("cd", path, NULL));
 	if (print)
 		ft_putendl_fd(path, 1);
 	update_pwd();
@@ -35,13 +35,13 @@ static int	resolve_path(const char **const path, int *const print)
 	{
 		*path = get_var("HOME");
 		if (!*path)
-			return (print_error("cd", NULL, NULL, "HOME not set"));
+			return (print_error("cd", NULL, "HOME not set"));
 	}
 	else if (!ft_strcmp(*path, "-"))
 	{
 		*path = get_var("OLDPWD");
 		if (!*path)
-			return (print_error("cd", NULL, NULL, "OLDPWD not set"));
+			return (print_error("cd", NULL, "OLDPWD not set"));
 		*print = 1;
 	}
 	return (0);

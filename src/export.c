@@ -33,11 +33,11 @@ static int	validate_var(const char *const var)
 
 	get_env(&varc, NULL, NULL);
 	if (*varc >= ENV_MAX)
-		return (print_error("export", NULL, var, "too many variables"));
+		return (print_var_error("export", var, "too many variables"));
 	if (ft_strlen(var) >= VAR_MAX)
-		return (print_error("export", NULL, var, "variable too long"));
+		return (print_var_error("export", var, "variable too long"));
 	if (!is_valid_key(var))
-		return (print_error("export", NULL, var, "not a valid identifier"));
+		return (print_var_error("export", var, "not a valid identifier"));
 	return (0);
 }
 

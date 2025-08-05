@@ -1,13 +1,14 @@
+#include <minishell/minishell.h>
 #include <libft.h>
 
 #include <string.h>
 #include <errno.h>
 #include <unistd.h>
 
-static void	buffer_error(const char *str);
+void	buffer_error(const char *str);
 
 int	print_error(const char *const command, const char *const path,
-	const char *const var, const char *const error)
+	const char *const error)
 {
 	buffer_error("minishell: ");
 	if (command)
@@ -20,12 +21,6 @@ int	print_error(const char *const command, const char *const path,
 		buffer_error(path);
 		buffer_error(": ");
 	}
-	if (var)
-	{
-		buffer_error("'");
-		buffer_error(var);
-		buffer_error("': ");
-	}
 	if (error)
 		buffer_error(error);
 	else
@@ -35,8 +30,19 @@ int	print_error(const char *const command, const char *const path,
 	return (1);
 }
 
+int	print_var_error(const char *const command, const char *const var,
+	const char *const error)
+{
+	char	buffer[VAR_MAX + 2];
+
+	buffer[0] = '`';
+	ft_strlcpy(buffer + 1, var, VAR_MAX);
+	ft_strlcat(buffer, "'", VAR_MAX + 2);
+	return (print_error(command, buffer, error));
+}
+
 //flushes on NULL
-static void	buffer_error(const char *str)
+void	buffer_error(const char *str)
 {
 	static char	buffer[1024];
 
