@@ -8,7 +8,7 @@
 int			validate_file_path(const char *const path);
 static int	find_cmd_path(const char *const cmd, char *const buffer);
 
-int	resolve_cmd_path(const char *const cmd, char *const buffer)
+int	resolve_binary_path(const char *const cmd, char *const buffer)
 {
 	if (ft_strchr(cmd, '/'))
 	{

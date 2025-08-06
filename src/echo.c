@@ -7,12 +7,12 @@ int	echo(char **argv)
 
 	newline = 1;
 	++argv;
-	while (*argv && (*argv)[0] == '-' && (*argv)[1])
+	while (*argv && argv[0][0] == '-' && argv[0][1])
 	{
 		i = 1;
-		while ((*argv)[i] == 'n')
+		while (argv[0][i] == 'n')
 			++i;
-		if ((*argv)[i])
+		if (argv[0][i])
 			break ;
 		newline = 0;
 		++argv;

@@ -1,6 +1,8 @@
+#include <stdbool.h>
+
 int	echo(char **argv);
-int	pwd(void);
-int	cd(int argc, char **argv);
-int	export(char **argv);
-int	unset(char **argv);
+int	pwd(bool print_output);
+int	cd(char **argv, bool print_output);
 int	env(void);
+int	export(char **argv, bool print_output);
+int	unset(char **argv);

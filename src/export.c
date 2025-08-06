@@ -3,10 +3,12 @@
 #include <minishell/error.h>
 #include <libft.h>
 
-static int	validate_var(const char *const var);
+#include <stdbool.h>
+
+static int	validate_var(const char *const var, bool print_output);
 static int	is_valid_key(const char *var);
 
-int	export(char **argv)
+int	export(char **argv, bool print_output)
 {
 	int	ret;
 
@@ -15,7 +17,7 @@ int	export(char **argv)
 	ret = 0;
 	while (*++argv)
 	{
-		if (validate_var(*argv))
+		if (validate_var(*argv, print_output))
 		{
 			ret = 1;
 			continue ;
@@ -27,17 +29,29 @@ int	export(char **argv)
 	return (ret);
 }
 
-static int	validate_var(const char *const var)
+static int	validate_var(const char *const var, bool print_output)
 {
 	int	*varc;
 
 	get_env(&varc, NULL, NULL);
 	if (*varc >= ENV_MAX)
-		return (print_var_error("export", var, "too many variables"));
+	{
+		if (print_output)
+			return (print_var_error("export", var, "too many variables"));
+		return (1);
+	}
 	if (ft_strlen(var) >= VAR_MAX)
-		return (print_var_error("export", var, "variable too long"));
+	{
+		if (print_output)
+			return (print_var_error("export", var, "variable too long"));
+		return (1);
+	}
 	if (!is_valid_key(var))
-		return (print_var_error("export", var, "not a valid identifier"));
+	{
+		if (print_output)
+			return (print_var_error("export", var, "not a valid identifier"));
+		return (1);
+	}
 	return (0);
 }
 
