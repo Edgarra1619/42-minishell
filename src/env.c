@@ -43,6 +43,27 @@ char	*get_var(const char *const key)
 	return (NULL);
 }
 
+char	*get_var_safe(const char *const key)
+{
+	size_t	key_len;
+	char			**envp;
+
+	if (!(key[0] == '_' || ft_isalpha(key[0])))
+		return (NULL);
+	key_len = 0;
+	while (ft_isalnum(key[key_len]) || key[key_len] == '_')
+		key_len++;
+	get_env(NULL, NULL, &envp);
+	while (*envp)
+	{
+		if (key_len == ft_strlen_delim(*envp, '=')
+			&& !ft_strncmp(key, *envp, key_len))
+			return (*envp + key_len + 1);
+		++envp;
+	}
+	return (NULL);
+}
+
 int	set_var(const char *const var)
 {
 	const int	key_len = ft_strlen_delim(var, '=');
