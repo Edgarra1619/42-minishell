@@ -10,7 +10,6 @@ void	buffer_error(const char *str);
 int	print_error(const char *const command, const char *const path,
 	const char *const error)
 {
-	buffer_error("minishell: ");
 	if (command)
 	{
 		buffer_error(command);
@@ -25,32 +24,40 @@ int	print_error(const char *const command, const char *const path,
 		buffer_error(error);
 	else
 		buffer_error(strerror(errno));
-	buffer_error("\n");
 	buffer_error(NULL);
 	return (1);
 }
 
-int	print_var_error(const char *const command, const char *const var,
-	const char *const error)
+int	print_var_error(const char *const var, const char *const error)
 {
-	char	buffer[VAR_MAX + 2];
-
-	buffer[0] = '`';
-	ft_strlcpy(buffer + 1, var, VAR_MAX);
-	ft_strlcat(buffer, "'", VAR_MAX + 2);
-	return (print_error(command, buffer, error));
+	buffer_error("export: `");
+	buffer_error(var);
+	buffer_error("': ");
+	buffer_error(error);
+	buffer_error(NULL);
+	return (1);
 }
 
-//flushes on NULL
+int	print_syntax_error(const char *const error)
+{
+	buffer_error("syntax error: ");
+	buffer_error(error);
+	buffer_error(NULL);
+	return (-1);
+}
+
 void	buffer_error(const char *str)
 {
-	static char	buffer[1024];
+	static char	buffer[ERROR_MAX];
 
+	if (!buffer[0])
+		ft_strlcat(buffer, "minishell: ", ERROR_MAX);
 	if (!str)
 	{
+		ft_strlcat(buffer, "\n", ERROR_MAX);
 		write(2, buffer, ft_strlen(buffer));
 		buffer[0] = 0;
 	}
 	else
-		ft_strlcat(buffer, str, 1024);
+		ft_strlcat(buffer, str, ERROR_MAX);
 }
