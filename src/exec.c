@@ -10,7 +10,7 @@
 
 static bool	is_command_builtin(const char *const cmd);
 static int	exec_builtin(t_cmd *const cmd);
-static void	exec_binary(t_cmd *const cmd);
+static int	exec_binary(t_cmd *const cmd);
 
 int	exec_command(t_cmd *const cmd)
 {
@@ -33,8 +33,7 @@ int	exec_command(t_cmd *const cmd)
 			exit(print_error(*cmd->argv, cmd->redirs[i].target_path, NULL));
 	if (is_builtin)
 		exit(exec_builtin(cmd));
-	exec_binary(cmd);
-	exit(0);
+	exit(exec_binary(cmd));
 }
 
 static int	exec_builtin(t_cmd *const cmd)
@@ -62,7 +61,7 @@ static int	exec_builtin(t_cmd *const cmd)
 	return (print_error(*cmd->argv, NULL, "builtin not found"));
 }
 
-static void	exec_binary(t_cmd *const cmd)
+static int	exec_binary(t_cmd *const cmd)
 {
 	char	**envp;
 
@@ -72,14 +71,16 @@ static void	exec_binary(t_cmd *const cmd)
 			exit(print_error(*cmd->argv, NULL, NULL));
 		exit(print_error(*cmd->argv, NULL, "command not found"));
 	}
-	get_env(NULL, NULL, &envp);
+	get_env(NULL, NULL, &envp, NULL);
 	execve(cmd->path, cmd->argv, envp);
-	exit(print_error(*cmd->argv, NULL, NULL));
+	return(print_error(*cmd->argv, NULL, NULL));
 }
 
 static bool	is_command_builtin(const char *const cmd)
 {
-	return (!ft_strcmp(cmd, "cd")
+	return (!ft_strcmp(cmd, "true")
+		|| !ft_strcmp(cmd, "false")
+		|| !ft_strcmp(cmd, "cd")
 		|| !ft_strcmp(cmd, "export")
 		|| !ft_strcmp(cmd, "unset")
 		|| !ft_strcmp(cmd, "echo")
