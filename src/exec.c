@@ -41,6 +41,10 @@ static int	exec_builtin(t_cmd *const cmd)
 {
 	const bool	print_output = !cmd->pid;
 
+	if (!cmd->argv[0] || !ft_strcmp(cmd->argv[0], "true"))
+		return (0);
+	if (!ft_strcmp(cmd->argv[0], "false"))
+		return (1);
 	if (!ft_strcmp(cmd->argv[0], "cd"))
 		return (cd(cmd->argv, print_output));
 	if (!ft_strcmp(cmd->argv[0], "pwd"))
