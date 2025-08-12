@@ -1,6 +1,6 @@
 NAME = minishell
 SRCS = main.c error.c echo.c pwd.c cd.c export.c unset.c env.c exec.c path.c \
-	   fd.c startup.c
+	   fd.c startup.c syntax.c big_tokenizer.c
 INCDIR = ./include/
 SRCDIR = ./src/
 OBJDIR = ./obj/
