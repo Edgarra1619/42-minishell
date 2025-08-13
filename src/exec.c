@@ -28,7 +28,7 @@ int	exec_command(t_cmd *const cmd)
 		return (0);
 	}
 	i = -1;
-	while (cmd->redirs[++i].source_fd >= 0)
+	while (++i < cmd->num_redirs)
 		if (redirect_fd(&cmd->redirs[i]))
 			exit(print_error(*cmd->argv, cmd->redirs[i].target_path, NULL));
 	if (is_builtin)
