@@ -1,23 +1,24 @@
 #include <minishell/minishell.h>
 #include <libft.h>
 
-void	get_env(int **varc, char **vars, char ***envp);
+void	get_env(int **varc, char **vars, char ***envp, char **status);
 
 int	env(void)
 {
 	char	**envp;
 
-	get_env(NULL, NULL, &envp);
+	get_env(NULL, NULL, &envp, NULL);
 	while (*envp)
 		ft_putendl_fd(*envp++, 1);
 	return (0);
 }
 
-void	get_env(int **varc, char **vars, char ***envp)
+void	get_env(int **varc, char **vars, char ***envp, char **status)
 {
 	static int	s_varc;
 	static char	s_vars[ENV_MAX][VAR_MAX];
 	static char	*s_envp[ENV_MAX + 1];
+	static char	s_status;
 
 	if (varc)
 		*varc = &s_varc;
@@ -25,6 +26,8 @@ void	get_env(int **varc, char **vars, char ***envp)
 		*vars = (char *)s_vars;
 	if (envp)
 		*envp = s_envp;
+	if (status)
+		*status = &s_status;
 }
 
 char	*get_var(const char *const key)
@@ -32,7 +35,7 @@ char	*get_var(const char *const key)
 	const size_t	key_len = ft_strlen(key);
 	char			**envp;
 
-	get_env(NULL, NULL, &envp);
+	get_env(NULL, NULL, &envp, NULL);
 	while (*envp)
 	{
 		if (key_len == ft_strlen_delim(*envp, '=')
@@ -46,14 +49,14 @@ char	*get_var(const char *const key)
 char	*get_var_safe(const char *const key)
 {
 	size_t	key_len;
-	char			**envp;
+	char	**envp;
 
 	if (!(key[0] == '_' || ft_isalpha(key[0])))
 		return (NULL);
 	key_len = 0;
 	while (ft_isalnum(key[key_len]) || key[key_len] == '_')
 		key_len++;
-	get_env(NULL, NULL, &envp);
+	get_env(NULL, NULL, &envp, NULL);
 	while (*envp)
 	{
 		if (key_len == ft_strlen_delim(*envp, '=')
@@ -71,7 +74,7 @@ int	set_var(const char *const var)
 	char		*vars;
 	char		**envp;
 
-	get_env(&varc, &vars, &envp);
+	get_env(&varc, &vars, &envp, NULL);
 	if (*varc >= ENV_MAX || !ft_strchr(var, '='))
 		return (1);
 	while (*envp && ft_strncmp(*envp, var, key_len + 1))
@@ -94,7 +97,7 @@ int	remove_var(const char *const key)
 	char			**envp;
 	const size_t	key_len = ft_strlen(key);
 
-	get_env(&varc, &vars, &envp);
+	get_env(&varc, &vars, &envp, NULL);
 	while (*envp)
 	{
 		if (key_len == ft_strlen_delim(*envp, '=')

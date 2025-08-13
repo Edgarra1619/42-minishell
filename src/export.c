@@ -33,7 +33,7 @@ static int	validate_var(const char *const var, bool print_output)
 {
 	int	*varc;
 
-	get_env(&varc, NULL, NULL);
+	get_env(&varc, NULL, NULL, NULL);
 	if (*varc >= ENV_MAX)
 	{
 		if (print_output)

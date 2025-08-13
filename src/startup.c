@@ -8,7 +8,7 @@ void	init_env(char **envp)
 	char	*vars;
 	char	**n_envp;
 
-	get_env(&varc, (char **) &vars, &n_envp);
+	get_env(&varc, (char **) &vars, &n_envp, NULL);
 	while (*envp)
 	{
 		n_envp[*varc] = vars + *varc * VAR_MAX;
