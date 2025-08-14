@@ -1,6 +1,6 @@
 NAME = minishell
 SRCS = main.c error.c echo.c pwd.c cd.c export.c unset.c env.c exec.c path.c \
-	   fd.c startup.c syntax.c pipeline_tokenizer.c
+	   fd.c startup.c syntax.c pipeline_tokenizer.c cmd_tokenizer.c
 INCDIR = ./include/
 SRCDIR = ./src/
 OBJDIR = ./obj/
@@ -10,6 +10,8 @@ CC = cc
 CFLAGS = -Wall -Wextra -gdwarf-4 $(INCFLAGS)
 INCFLAGS = -I $(INCDIR) -I $(LFTDIR)/include/
 LIBFLAGS = -lreadline
+
+VALGFLAGS = --track-origins=yes --leak-check=full --show-leak-kinds=all --suppressions=readline.supp
 
 OBJS = $(patsubst %.c, $(OBJDIR)%.o, $(SRCS))
 LFT = $(LFTDIR)/libft.a
@@ -33,6 +35,23 @@ $(NAME): $(OBJS) $(LFT)
 $(OBJS): $(OBJDIR)%.o: $(SRCDIR)%.c
 	mkdir -p $(OBJDIR)
 	$(CC) $(CFLAGS) -o $@ -c $<
+
+test: $(NAME)
+	./$(NAME)
+
+gprof: $(NAME)
+	./$(NAME)
+	rm gprof-output -f
+	gprof $(NAME) > gprof-output
+
+valgrind: $(NAME)
+	valgrind $(VALGFLAGS) ./$(NAME)
+
+gdb: $(NAME)
+	gdbtui $(NAME)
+
+vgdb: $(NAME)
+	valgrind $(VALGFLAGS) --vgdb=full --vgdb-error=0 ./$(NAME)
 
 $(LFT):
 	make -C $(LFTDIR)
