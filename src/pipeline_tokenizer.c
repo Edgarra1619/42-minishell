@@ -50,9 +50,10 @@ static t_cmd	*split_cmds(char *prompt, int num_cmds)
 	t_cmd *const	cmds = ft_calloc(num_cmds, sizeof(t_cmd));
 	int				i;
 
-	i = 0;
 	if (!cmds)
 		return (NULL);
+	cmds[0].cmd = prompt;
+	i = 1;
 	while (*prompt)
 	{
 		if (*prompt == '|')
