@@ -28,7 +28,7 @@ int	tokenize_cmd(t_cmd *cmd)
 			cmd->cmd = tmp + 1;
 			continue;
 		}
-		if (append_args(cmd->argv + argc, cmd->cmd, tmp))
+		if (tmp != cmd->cmd && append_args(cmd->argv + argc, cmd->cmd, tmp))
 			return (1);
 		cmd->cmd = tmp + !!*tmp;
 		if (ft_isspace(*tmp))
