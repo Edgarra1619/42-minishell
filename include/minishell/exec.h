@@ -3,6 +3,7 @@
 
 #include <minishell/types.h>
 
-int	exec_command(t_cmd *cmd);
+int		exec_pipeline(t_pipeline *pl);
+void	wait_pipeline(t_pipeline *pl);
 
 #endif

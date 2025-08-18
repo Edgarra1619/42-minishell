@@ -7,7 +7,7 @@ int	close_fd(int *fd);
 
 int	redirect_fd(t_redir *const redir)
 {
-	const mode_t	open_mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
+	const static mode_t	open_mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
 
 	if (redir->target_fd < 0)
 	{

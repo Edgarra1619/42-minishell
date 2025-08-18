@@ -52,6 +52,9 @@ static t_cmd	*split_cmds(char *prompt, int num_cmds)
 
 	if (!cmds)
 		return (NULL);
+	i = -1;
+	while (++i < num_cmds)
+		ft_memset(cmds[i].pipe, -1, sizeof(int) * 2);
 	cmds[0].cmd = prompt;
 	i = 1;
 	while (*prompt)
@@ -60,8 +63,6 @@ static t_cmd	*split_cmds(char *prompt, int num_cmds)
 		{
 			*prompt = 0;
 			cmds[i++].cmd = prompt + 1;
-			if (!--num_cmds)
-				return (cmds);
 		}
 		else if (*prompt == '\'' || *prompt == '"')
 			prompt = ft_strchr(prompt + 1, *prompt);
