@@ -7,12 +7,12 @@
 
 void	buffer_error(const char *str);
 
-int	print_error(const char *const command, const char *const path,
+int	print_error(const char *const cmd, const char *const path,
 	const char *const error)
 {
-	if (command)
+	if (cmd)
 	{
-		buffer_error(command);
+		buffer_error(cmd);
 		buffer_error(": ");
 	}
 	if (path)

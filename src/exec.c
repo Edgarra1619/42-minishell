@@ -11,8 +11,8 @@
 #include <stdbool.h>
 #include <unistd.h>
 
-static int	exec_command(t_cmd *const cmd);
-static bool	is_command_builtin(const char *const cmd);
+static int	exec_cmd(t_cmd *const cmd);
+static bool	is_cmd_builtin(const char *const cmd);
 static int	exec_builtin(t_cmd *const cmd);
 static int	exec_binary(t_cmd *const cmd);
 
@@ -34,7 +34,7 @@ int	exec_pipeline(t_pipeline *const pl)
 				= (t_redir){0, cmd->pipe[0], NULL, OPEN_PIPE_READ};
 		}
 		tokenize_cmd(cmd);
-		exec_command(cmd);
+		exec_cmd(cmd);
 		if (i)
 			close_fd(cmd[-1].pipe + 0);
 		close_fd(cmd->pipe + 1);
@@ -57,9 +57,9 @@ void	wait_pipeline(t_pipeline *const pl)
 	}
 }
 
-static int	exec_command(t_cmd *const cmd)
+static int	exec_cmd(t_cmd *const cmd)
 {
-	const bool	is_builtin = is_command_builtin(cmd->argv[0]);
+	const bool	is_builtin = is_cmd_builtin(cmd->argv[0]);
 	int			i;
 
 	cmd->pid = fork();
@@ -121,7 +121,7 @@ static int	exec_binary(t_cmd *const cmd)
 	return (print_error(*cmd->argv, NULL, NULL));
 }
 
-static bool	is_command_builtin(const char *const cmd)
+static bool	is_cmd_builtin(const char *const cmd)
 {
 	return (!ft_strcmp(cmd, "true")
 		|| !ft_strcmp(cmd, "false")
