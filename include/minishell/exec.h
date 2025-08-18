@@ -1,7 +1,7 @@
 #ifndef EXEC_H
 # define EXEC_H
 
-#include <minishell/types.h>
+# include <minishell/types.h>
 
 int		exec_pipeline(t_pipeline *pl);
 void	wait_pipeline(t_pipeline *pl);

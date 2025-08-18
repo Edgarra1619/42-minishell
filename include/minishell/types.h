@@ -1,12 +1,10 @@
 #ifndef TYPES_H
 # define TYPES_H
 
-#include <minishell/minishell.h>
+# include <minishell/minishell.h>
 
-#include <sys/types.h>
-#include <limits.h>
-#include <fcntl.h>
-#include <unistd.h>
+# include <limits.h>
+# include <fcntl.h>
 
 typedef enum e_open_flags
 {

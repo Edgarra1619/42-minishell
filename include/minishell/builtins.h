@@ -1,7 +1,7 @@
 #ifndef BUILTINS_H
 # define BUILTINS_H
 
-#include <stdbool.h>
+# include <stdbool.h>
 
 int	echo(char **argv);
 int	pwd(bool print_output);
