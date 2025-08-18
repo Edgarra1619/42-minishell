@@ -1,9 +1,9 @@
 #include <minishell/types.h>
 #include <minishell/path.h>
 
-#include <fcntl.h>
+#include <unistd.h>
 
-int	close_fd(int *fd);
+int	close_fd(int *const fd);
 
 int	redirect_fd(t_redir *const redir)
 {
@@ -14,8 +14,8 @@ int	redirect_fd(t_redir *const redir)
 		if (!(redir->open_flags & O_WRONLY)
 			&& validate_file_path(redir->target_path))
 			return (1);
-		redir->target_fd = open(
-				redir->target_path, redir->open_flags, open_mode);
+		redir->target_fd
+			= open(redir->target_path, redir->open_flags, open_mode);
 		if (redir->target_fd == -1)
 			return (1);
 	}

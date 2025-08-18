@@ -11,6 +11,7 @@
 #include <stdbool.h>
 #include <unistd.h>
 
+static int	pipe_cmds(t_cmd *const cmd1, t_cmd *const cmd2);
 static int	exec_cmd(t_cmd *const cmd);
 static bool	is_cmd_builtin(const char *const cmd);
 static int	exec_builtin(t_cmd *const cmd);
@@ -26,13 +27,7 @@ int	exec_pipeline(t_pipeline *const pl)
 	{
 		cmd = pl->cmds + i;
 		if (i + 1 < pl->num_cmds)
-		{
-			pipe(cmd->pipe);
-			cmd->redirs[cmd->num_redirs++]
-				= (t_redir){1, cmd->pipe[1], NULL, OPEN_PIPE_WRITE};
-			cmd[1].redirs[cmd[1].num_redirs++]
-				= (t_redir){0, cmd->pipe[0], NULL, OPEN_PIPE_READ};
-		}
+			pipe_cmds(cmd, cmd + 1);
 		tokenize_cmd(cmd);
 		exec_cmd(cmd);
 		if (i)
@@ -119,6 +114,19 @@ static int	exec_binary(t_cmd *const cmd)
 	get_env(NULL, NULL, &envp, NULL);
 	execve(cmd->path, cmd->argv, envp);
 	return (print_error(*cmd->argv, NULL, NULL));
+}
+
+static int	pipe_cmds(t_cmd *const cmd1, t_cmd *const cmd2)
+{
+	int	fds[2];
+
+	if (pipe(fds))
+		return (1);
+	cmd1->pipe[0] = fds[0];
+	cmd1->pipe[1] = fds[1];
+	cmd1->redirs[cmd1->num_redirs++] = (t_redir){1, cmd1->pipe[1], NULL, 0};
+	cmd2->redirs[cmd2->num_redirs++] = (t_redir){0, cmd1->pipe[0], NULL, 0};
+	return (0);
 }
 
 static bool	is_cmd_builtin(const char *const cmd)
