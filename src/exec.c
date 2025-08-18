@@ -2,17 +2,62 @@
 #include <minishell/path.h>
 #include <minishell/env.h>
 #include <minishell/builtins.h>
+#include <minishell/tokenizer.h>
 #include <minishell/error.h>
 #include <libft.h>
 
+#include <sys/wait.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <unistd.h>
 
+static int	exec_command(t_cmd *const cmd);
 static bool	is_command_builtin(const char *const cmd);
 static int	exec_builtin(t_cmd *const cmd);
 static int	exec_binary(t_cmd *const cmd);
 
-int	exec_command(t_cmd *const cmd)
+int	exec_pipeline(t_pipeline *const pl)
+{
+	int		i;
+	t_cmd	*cmd;
+
+	i = -1;
+	while (++i < pl->num_cmds)
+	{
+		cmd = pl->cmds + i;
+		if (i + 1 < pl->num_cmds)
+		{
+			pipe(cmd->pipe);
+			cmd->redirs[cmd->num_redirs++]
+				= (t_redir){1, cmd->pipe[1], NULL, OPEN_PIPE_WRITE};
+			cmd[1].redirs[cmd[1].num_redirs++]
+				= (t_redir){0, cmd->pipe[0], NULL, OPEN_PIPE_READ};
+		}
+		tokenize_cmd(cmd);
+		exec_command(cmd);
+		if (i)
+			close_fd(cmd[-1].pipe + 0);
+		close_fd(cmd->pipe + 1);
+	}
+	return (0);
+}
+
+void	wait_pipeline(t_pipeline *const pl)
+{
+	int		i;
+	char	*status;
+
+	get_env(NULL, NULL, NULL, &status);
+	i = 0;
+	while (i < pl->num_cmds && pl->cmds[i].pid > 0)
+	{
+		waitpid(pl->cmds[i].pid, &pl->cmds[i].status, 0);
+		*status = WEXITSTATUS(pl->cmds[i].status);
+		i++;
+	}
+}
+
+static int	exec_command(t_cmd *const cmd)
 {
 	const bool	is_builtin = is_command_builtin(cmd->argv[0]);
 	int			i;
@@ -20,13 +65,13 @@ int	exec_command(t_cmd *const cmd)
 	cmd->pid = fork();
 	if (cmd->pid == -1)
 		return (print_error(*cmd->argv, NULL, NULL));
-	close_fd(&cmd->pipe[!!cmd->pid]);
 	if (cmd->pid > 0)
 	{
 		if (is_builtin)
 			exec_builtin(cmd);
 		return (0);
 	}
+	close_fd(cmd->pipe);
 	i = -1;
 	while (++i < cmd->num_redirs)
 		if (redirect_fd(&cmd->redirs[i]))
@@ -73,7 +118,7 @@ static int	exec_binary(t_cmd *const cmd)
 	}
 	get_env(NULL, NULL, &envp, NULL);
 	execve(cmd->path, cmd->argv, envp);
-	return(print_error(*cmd->argv, NULL, NULL));
+	return (print_error(*cmd->argv, NULL, NULL));
 }
 
 static bool	is_command_builtin(const char *const cmd)
