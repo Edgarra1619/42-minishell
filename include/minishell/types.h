@@ -18,6 +18,7 @@ typedef struct s_redir
 	int				source_fd;
 	int				target_fd;
 	char			*target_path;
+	char			*heredoc_eof;
 	t_open_flags	open_flags;
 }	t_redir;
 

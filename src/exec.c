@@ -124,8 +124,8 @@ static int	pipe_cmds(t_cmd *const cmd1, t_cmd *const cmd2)
 		return (1);
 	cmd1->pipe[0] = fds[0];
 	cmd1->pipe[1] = fds[1];
-	cmd1->redirs[cmd1->num_redirs++] = (t_redir){1, cmd1->pipe[1], NULL, 0};
-	cmd2->redirs[cmd2->num_redirs++] = (t_redir){0, cmd1->pipe[0], NULL, 0};
+	cmd1->redirs[cmd1->num_redirs++] = (t_redir){1, fds[1], NULL, NULL, 0};
+	cmd2->redirs[cmd2->num_redirs++] = (t_redir){0, fds[0], NULL, NULL, 0};
 	return (0);
 }
 

@@ -1,15 +1,25 @@
 #include <minishell/types.h>
 #include <minishell/path.h>
+#include <minishell/error.h>
+#include <libft.h>
 
+#include <readline/readline.h>
+#include <stdlib.h>
 #include <unistd.h>
 
-int	close_fd(int *const fd);
+int			close_fd(int *const fd);
+static int	open_heredoc(int *const target_fd, char *const eof);
 
 int	redirect_fd(t_redir *const redir)
 {
 	const static mode_t	open_mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
 
-	if (redir->target_fd < 0)
+	if (redir->heredoc_eof)
+	{
+		if (open_heredoc(&redir->target_fd, redir->heredoc_eof))
+			return (1);
+	}
+	else if (redir->target_path)
 	{
 		if (!(redir->open_flags & O_WRONLY)
 			&& validate_file_path(redir->target_path))
@@ -35,4 +45,33 @@ int	close_fd(int *const fd)
 	if (!ret)
 		*fd = -1;
 	return (ret);
+}
+
+static int	open_heredoc(int *const target_fd, char *const eof)
+{
+	int		fds[2];
+	char	*line;
+
+	if (pipe(fds))
+		return (1);
+	line = NULL;
+	while (1)
+	{
+		line = readline("> ");
+		if (!line)
+		{
+			print_error(NULL, NULL, "warning: heredoc delimited by eof");
+			break ;
+		}
+		if (!ft_strcmp(line, eof))
+		{
+			free(line);
+			break ;
+		}
+		ft_putendl_fd(line, fds[1]);
+		free(line);
+	}
+	close(fds[1]);
+	*target_fd = fds[0];
+	return (0);
 }
