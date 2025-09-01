@@ -10,7 +10,8 @@ typedef enum e_open_flags
 {
 	OPEN_READ = O_RDONLY,
 	OPEN_WRITE = O_WRONLY | O_CREAT | O_TRUNC,
-	OPEN_APPEND = O_WRONLY | O_CREAT | O_APPEND
+	OPEN_APPEND = O_WRONLY | O_CREAT | O_APPEND,
+	OPEN_HEREDOC
 }	t_open_flags;
 
 typedef struct s_redir
@@ -18,7 +19,6 @@ typedef struct s_redir
 	int				source_fd;
 	int				target_fd;
 	char			*target_path;
-	char			*heredoc_eof;
 	t_open_flags	open_flags;
 }	t_redir;
 

@@ -9,18 +9,11 @@
 #include <stdbool.h>
 #include <unistd.h>
 
-static int	open_heredoc(int *const target_fd, char *const eof);
-
 int	redirect_fd(t_redir *const redir)
 {
 	const static mode_t	open_mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
 
-	if (redir->heredoc_eof)
-	{
-		if (open_heredoc(&redir->target_fd, redir->heredoc_eof))
-			return (1);
-	}
-	else if (redir->target_path)
+	if (redir->target_path)
 	{
 		if (!(redir->open_flags & O_WRONLY)
 			&& validate_file_path(redir->target_path))
@@ -33,6 +26,35 @@ int	redirect_fd(t_redir *const redir)
 	if (dup2(redir->target_fd, redir->source_fd) == -1)
 		return (1);
 	close(redir->target_fd);
+	return (0);
+}
+
+int	open_heredoc(int *const target_fd, const char *const eof)
+{
+	int		fds[2];
+	char	*line;
+
+	if (pipe(fds))
+		return (1);
+	line = NULL;
+	while (1)
+	{
+		line = readline("> ");
+		if (!line)
+		{
+			print_error(NULL, NULL, "warning: heredoc delimited by eof");
+			break ;
+		}
+		if (!ft_strcmp(line, eof))
+		{
+			free(line);
+			break ;
+		}
+		ft_putendl_fd(line, fds[1]);
+		free(line);
+	}
+	close(fds[1]);
+	*target_fd = fds[0];
 	return (0);
 }
 
@@ -65,33 +87,4 @@ void	close_unused_fds(const t_cmd *const cmd)
 	while (++i < FD_MAX)
 		if (!fds[i])
 			close(i);
-}
-
-static int	open_heredoc(int *const target_fd, char *const eof)
-{
-	int		fds[2];
-	char	*line;
-
-	if (pipe(fds))
-		return (1);
-	line = NULL;
-	while (1)
-	{
-		line = readline("> ");
-		if (!line)
-		{
-			print_error(NULL, NULL, "warning: heredoc delimited by eof");
-			break ;
-		}
-		if (!ft_strcmp(line, eof))
-		{
-			free(line);
-			break ;
-		}
-		ft_putendl_fd(line, fds[1]);
-		free(line);
-	}
-	close(fds[1]);
-	*target_fd = fds[0];
-	return (0);
 }
