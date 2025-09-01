@@ -1,3 +1,4 @@
+#include <minishell/minishell.h>
 #include <minishell/types.h>
 #include <minishell/path.h>
 #include <minishell/error.h>
@@ -47,11 +48,10 @@ int	close_fd(int *const fd)
 
 void	close_unused_fds(const t_cmd *const cmd)
 {
-	const int	fd_max = 1024;
-	bool		fds[fd_max];
-	int			i;
+	bool	fds[FD_MAX];
+	int		i;
 
-	ft_bzero(fds, sizeof(bool) * fd_max);
+	ft_bzero(fds, sizeof(bool) * FD_MAX);
 	fds[0] = true;
 	fds[1] = true;
 	fds[2] = true;
@@ -62,7 +62,7 @@ void	close_unused_fds(const t_cmd *const cmd)
 			fds[cmd->redirs[i].source_fd] = true;
 	}
 	i = -1;
-	while (++i < fd_max)
+	while (++i < FD_MAX)
 		if (!fds[i])
 			close(i);
 }

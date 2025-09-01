@@ -13,5 +13,8 @@
 # ifndef ERROR_MAX
 #  define ERROR_MAX 1024
 # endif
+# ifndef FD_MAX
+#  define FD_MAX 1024
+# endif
 
 #endif
