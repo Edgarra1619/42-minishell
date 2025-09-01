@@ -5,9 +5,9 @@
 
 #include <readline/readline.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <unistd.h>
 
-int			close_fd(int *const fd);
 static int	open_heredoc(int *const target_fd, char *const eof);
 
 int	redirect_fd(t_redir *const redir)
@@ -31,20 +31,40 @@ int	redirect_fd(t_redir *const redir)
 	}
 	if (dup2(redir->target_fd, redir->source_fd) == -1)
 		return (1);
-	close_fd(&redir->target_fd);
+	close(redir->target_fd);
 	return (0);
 }
 
 int	close_fd(int *const fd)
 {
-	int	ret;
-
 	if (*fd < 0)
 		return (0);
-	ret = close(*fd);
-	if (!ret)
-		*fd = -1;
-	return (ret);
+	if (close(*fd))
+		return (1);
+	*fd = -1;
+	return (0);
+}
+
+void	close_unused_fds(const t_cmd *const cmd)
+{
+	const int	fd_max = 1024;
+	bool		fds[fd_max];
+	int			i;
+
+	ft_bzero(fds, sizeof(bool) * fd_max);
+	fds[0] = true;
+	fds[1] = true;
+	fds[2] = true;
+	if (cmd)
+	{
+		i = -1;
+		while (++i < cmd->num_redirs)
+			fds[cmd->redirs[i].source_fd] = true;
+	}
+	i = -1;
+	while (++i < fd_max)
+		if (!fds[i])
+			close(i);
 }
 
 static int	open_heredoc(int *const target_fd, char *const eof)

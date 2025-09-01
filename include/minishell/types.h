@@ -27,7 +27,6 @@ typedef struct s_cmd
 	char	*cmd;
 	char	path[PATH_MAX];
 	char	**argv;
-	int		pipe[2];
 	int		num_redirs;
 	t_redir	redirs[REDIR_MAX];
 	pid_t	pid;

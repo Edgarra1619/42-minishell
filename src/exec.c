@@ -30,10 +30,8 @@ int	exec_pipeline(t_pipeline *const pl)
 			pipe_cmds(cmd, cmd + 1);
 		tokenize_cmd(cmd);
 		exec_cmd(cmd);
-		if (i)
-			close_fd(cmd[-1].pipe + 0);
-		close_fd(cmd->pipe + 1);
 	}
+	close_unused_fds(NULL);
 	return (0);
 }
 
@@ -66,11 +64,11 @@ static int	exec_cmd(t_cmd *const cmd)
 			exec_builtin(cmd);
 		return (0);
 	}
-	close_fd(cmd->pipe);
 	i = -1;
 	while (++i < cmd->num_redirs)
 		if (redirect_fd(&cmd->redirs[i]))
 			exit(print_error(*cmd->argv, cmd->redirs[i].target_path, NULL));
+	close_unused_fds(cmd);
 	if (is_builtin)
 		exit(exec_builtin(cmd));
 	exit(exec_binary(cmd));
@@ -122,8 +120,6 @@ static int	pipe_cmds(t_cmd *const cmd1, t_cmd *const cmd2)
 
 	if (pipe(fds))
 		return (1);
-	cmd1->pipe[0] = fds[0];
-	cmd1->pipe[1] = fds[1];
 	cmd1->redirs[cmd1->num_redirs++] = (t_redir){1, fds[1], NULL, NULL, 0};
 	cmd2->redirs[cmd2->num_redirs++] = (t_redir){0, fds[0], NULL, NULL, 0};
 	return (0);

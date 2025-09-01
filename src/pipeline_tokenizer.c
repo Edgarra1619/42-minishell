@@ -52,9 +52,6 @@ static t_cmd	*split_cmds(char *prompt, int num_cmds)
 
 	if (!cmds)
 		return (NULL);
-	i = -1;
-	while (++i < num_cmds)
-		ft_memset(cmds[i].pipe, -1, sizeof(int) * 2);
 	cmds[0].cmd = prompt;
 	i = 1;
 	while (*prompt)
