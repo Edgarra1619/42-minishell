@@ -12,6 +12,8 @@
 
 #include <libft.h>
 
+#include <limits.h>
+
 int	ft_atoi(const char *nptr)
 {
 	int	sign;
@@ -48,4 +50,28 @@ int	ft_atoi_hex(const char *nptr)
 			break ;
 	}
 	return (num);
+}
+
+int	ft_atoi_safe(int *const num_ptr, const char *str)
+{
+	long	num;
+	int		sign;
+
+	while (ft_isspace(*str))
+		str++;
+	sign = 1;
+	if (*str == '-' || *str == '+')
+		if (*str++ == '-')
+			sign = -1;
+	num = 0;
+	while (*str)
+	{
+		if (!ft_isdigit(*str))
+			return (1);
+		if (num * sign > INT_MAX || num * sign < INT_MIN)
+			return (1);
+		num = num * 10 + *str++ - '0';
+	}
+	*num_ptr = num * sign;
+	return (0);
 }
