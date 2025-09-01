@@ -12,7 +12,7 @@
 #include <unistd.h>
 
 static int	pipe_cmds(t_cmd *const cmd1, t_cmd *const cmd2);
-static int	exec_cmd(t_cmd *const cmd);
+static int	exec_cmd(t_cmd *const cmd, const bool is_single_cmd);
 static bool	is_cmd_builtin(const char *const cmd);
 static int	exec_builtin(t_cmd *const cmd);
 static int	exec_binary(t_cmd *const cmd);
@@ -29,7 +29,7 @@ int	exec_pipeline(t_pipeline *const pl)
 		if (i + 1 < pl->num_cmds)
 			pipe_cmds(cmd, cmd + 1);
 		tokenize_cmd(cmd);
-		exec_cmd(cmd);
+		exec_cmd(cmd, pl->num_cmds == 1);
 	}
 	close_unused_fds(NULL);
 	return (0);
@@ -50,7 +50,7 @@ void	wait_pipeline(t_pipeline *const pl)
 	}
 }
 
-static int	exec_cmd(t_cmd *const cmd)
+static int	exec_cmd(t_cmd *const cmd, const bool is_single_cmd)
 {
 	const bool	is_builtin = is_cmd_builtin(cmd->argv[0]);
 	int			i;
@@ -60,7 +60,7 @@ static int	exec_cmd(t_cmd *const cmd)
 		return (print_error(*cmd->argv, NULL, NULL));
 	if (cmd->pid > 0)
 	{
-		if (is_builtin)
+		if (is_single_cmd && is_builtin)
 			exec_builtin(cmd);
 		return (0);
 	}
