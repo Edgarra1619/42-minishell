@@ -8,7 +8,7 @@
 static int	validate_var(const char *const var, bool print_output);
 static int	is_valid_key(const char *var);
 
-int	export(char **argv, bool print_output)
+int	export_builtin(char **argv, const bool print_output)
 {
 	int	ret;
 

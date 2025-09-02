@@ -4,7 +4,7 @@
 #include <limits.h>
 #include <stdbool.h>
 
-int	pwd(bool print_output)
+int	pwd_builtin(const bool print_output)
 {
 	char	buffer[PATH_MAX];
 

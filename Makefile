@@ -1,10 +1,13 @@
 NAME = minishell
-SRCS = main.c error.c echo.c pwd.c cd.c export.c unset.c env.c exec.c path.c \
-	   fd.c startup.c syntax.c pipeline_tokenizer.c cmd_tokenizer.c
+SRCS = main.c error.c env.c exec.c path.c fd.c startup.c syntax.c \
+	   pipeline_tokenizer.c cmd_tokenizer.c \
+	   $(BUILTDIR)/echo.c $(BUILTDIR)/pwd.c $(BUILTDIR)/cd.c $(BUILTDIR)/env.c \
+	   $(BUILTDIR)/unset.c $(BUILTDIR)/export.c $(BUILTDIR)/exit.c
 INCDIR = ./include/
 SRCDIR = ./src/
 OBJDIR = ./obj/
 LFTDIR = ./libft/
+BUILTDIR = builtins/
 
 CC = cc
 CFLAGS = -Wall -Wextra -gdwarf-4 $(INCFLAGS)
@@ -33,7 +36,7 @@ $(NAME): $(OBJS) $(LFT)
 	$(CC) $(CFLAGS) $(LIBFLAGS) -o $@ $^
 
 $(OBJS): $(OBJDIR)%.o: $(SRCDIR)%.c
-	mkdir -p $(OBJDIR)
+	mkdir -p $(OBJDIR) $(OBJDIR)/$(BUILTDIR)
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 test: $(NAME)

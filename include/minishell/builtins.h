@@ -3,11 +3,12 @@
 
 # include <stdbool.h>
 
-int	echo(char **argv);
-int	pwd(bool print_output);
-int	cd(char **argv, bool print_output);
-int	env(void);
-int	export(char **argv, bool print_output);
-int	unset(char **argv);
+int	echo_builtin(char **argv);
+int	pwd_builtin(const bool print_output);
+int	cd_builtin(char **argv, const bool print_output);
+int	env_builtin(void);
+int	export_builtin(char **argv, const bool print_output);
+int	unset_builtin(char **argv);
+int	exit_builtin(char **argv, const bool print_output);
 
 #endif

@@ -1,6 +1,6 @@
 #include <minishell/env.h>
 
-int	unset(char **argv)
+int	unset_builtin(char **argv)
 {
 	while (*++argv)
 		remove_var(*argv);

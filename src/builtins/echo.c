@@ -1,6 +1,6 @@
 #include <libft.h>
 
-int	echo(char **argv)
+int	echo_builtin(char **argv)
 {
 	int	newline;
 	int	i;

@@ -13,7 +13,7 @@
 
 static int	pipe_cmds(t_cmd *const cmd1, t_cmd *const cmd2);
 static int	exec_cmd(t_cmd *const cmd, const bool is_single_cmd);
-static bool	is_cmd_builtin(const char *const cmd);
+static bool	is_cmd_builtin(const char *const name);
 static int	exec_builtin(t_cmd *const cmd);
 static int	exec_binary(t_cmd *const cmd);
 
@@ -60,7 +60,11 @@ static int	exec_cmd(t_cmd *const cmd, const bool is_single_cmd)
 		return (print_error(*cmd->argv, NULL, NULL));
 	if (cmd->pid > 0)
 	{
-		if (is_single_cmd && is_builtin)
+		if (!is_single_cmd)
+			return (0);
+		if (!ft_strcmp(cmd->argv[0], "exit"))
+			exit(exec_builtin(cmd));
+		if (is_builtin)
 			exec_builtin(cmd);
 		return (0);
 	}
@@ -76,27 +80,30 @@ static int	exec_cmd(t_cmd *const cmd, const bool is_single_cmd)
 
 static int	exec_builtin(t_cmd *const cmd)
 {
-	const bool	print_output = !cmd->pid;
+	const char *const	name = cmd->argv[0];
+	const bool			print_output = !cmd->pid;
 
-	if (!cmd->argv[0] || !ft_strcmp(cmd->argv[0], "true"))
+	if (!name || !ft_strcmp(name, "true"))
 		return (0);
-	if (!ft_strcmp(cmd->argv[0], "false"))
+	if (!ft_strcmp(name, "false"))
 		return (1);
-	if (!ft_strcmp(cmd->argv[0], "cd"))
-		return (cd(cmd->argv, print_output));
-	if (!ft_strcmp(cmd->argv[0], "pwd"))
-		return (pwd(print_output));
-	if (!ft_strcmp(cmd->argv[0], "export"))
-		return (export(cmd->argv, print_output));
-	if (!ft_strcmp(cmd->argv[0], "unset"))
-		return (unset(cmd->argv));
+	if (!ft_strcmp(name, "cd"))
+		return (cd_builtin(cmd->argv, print_output));
+	if (!ft_strcmp(name, "pwd"))
+		return (pwd_builtin(print_output));
+	if (!ft_strcmp(name, "export"))
+		return (export_builtin(cmd->argv, print_output));
+	if (!ft_strcmp(name, "unset"))
+		return (unset_builtin(cmd->argv));
+	if (!ft_strcmp(name, "exit"))
+		return (exit_builtin(cmd->argv, print_output));
 	if (!print_output)
 		return (0);
-	if (!ft_strcmp(cmd->argv[0], "echo"))
-		return (echo(cmd->argv));
-	if (!ft_strcmp(cmd->argv[0], "env"))
-		return (env());
-	return (print_error(*cmd->argv, NULL, "builtin not found"));
+	if (!ft_strcmp(name, "echo"))
+		return (echo_builtin(cmd->argv));
+	if (!ft_strcmp(name, "env"))
+		return (env_builtin());
+	return (print_error(name, NULL, "builtin not found"));
 }
 
 static int	exec_binary(t_cmd *const cmd)
@@ -120,19 +127,20 @@ static int	pipe_cmds(t_cmd *const cmd1, t_cmd *const cmd2)
 
 	if (pipe(fds))
 		return (1);
-	cmd1->redirs[cmd1->num_redirs++] = (t_redir){1, fds[1], NULL, NULL, 0};
-	cmd2->redirs[cmd2->num_redirs++] = (t_redir){0, fds[0], NULL, NULL, 0};
+	cmd1->redirs[cmd1->num_redirs++] = (t_redir){1, fds[1], NULL, 0};
+	cmd2->redirs[cmd2->num_redirs++] = (t_redir){0, fds[0], NULL, 0};
 	return (0);
 }
 
-static bool	is_cmd_builtin(const char *const cmd)
+static bool	is_cmd_builtin(const char *const name)
 {
-	return (!ft_strcmp(cmd, "true")
-		|| !ft_strcmp(cmd, "false")
-		|| !ft_strcmp(cmd, "cd")
-		|| !ft_strcmp(cmd, "export")
-		|| !ft_strcmp(cmd, "unset")
-		|| !ft_strcmp(cmd, "echo")
-		|| !ft_strcmp(cmd, "env")
-		|| !ft_strcmp(cmd, "pwd"));
+	return (!ft_strcmp(name, "true")
+		|| !ft_strcmp(name, "false")
+		|| !ft_strcmp(name, "cd")
+		|| !ft_strcmp(name, "export")
+		|| !ft_strcmp(name, "unset")
+		|| !ft_strcmp(name, "echo")
+		|| !ft_strcmp(name, "env")
+		|| !ft_strcmp(name, "pwd")
+		|| !ft_strcmp(name, "exit"));
 }

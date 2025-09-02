@@ -11,7 +11,7 @@ static int	resolve_path(const char **const path, bool *const print_cwd,
 				const bool print_output);
 static void	update_pwd(void);
 
-int	cd(char **argv, bool print_output)
+int	cd_builtin(char **argv, const bool print_output)
 {
 	const char	*path = argv[1];
 	bool		print_cwd;

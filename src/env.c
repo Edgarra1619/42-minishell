@@ -1,18 +1,6 @@
 #include <minishell/minishell.h>
 #include <libft.h>
 
-void	get_env(int **varc, char **vars, char ***envp, char **status);
-
-int	env(void)
-{
-	char	**envp;
-
-	get_env(NULL, NULL, &envp, NULL);
-	while (*envp)
-		ft_putendl_fd(*envp++, 1);
-	return (0);
-}
-
 void	get_env(int **varc, char **vars, char ***envp, char **status)
 {
 	static int	s_varc;
