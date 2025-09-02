@@ -41,7 +41,8 @@ static int	verify_cmd_syntax(const char **cmd)
 
 static int	verify_redir_syntax(const char **redir)
 {
-	if (**redir == (*redir)[1])
+	if ((*redir)[0] == (*redir)[1]
+		|| ((*redir)[0] == '<' && (*redir)[1] == '>'))
 		(*redir)++;
 	(*redir)++;
 	while (ft_isspace(**redir))
