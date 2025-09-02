@@ -54,17 +54,20 @@ static int	parse_extens(int *argc, char ***arg, char **str, bool inquotes)
 			return (1);
 		ft_strappend(*arg + *argc * !inquotes, temp);
 		free(temp);
+		(*str)++;
 		return (!!*(*arg + *argc * !inquotes));
 	}
 	if (!(**str == '_' || ft_isalpha(**str)))
-		ft_strappend(*arg + *argc * !inquotes, "$");
+		return (!ft_strappend(*arg + *argc * !inquotes, "$"));
 	temp = get_var_safe(*str);
+	while (**str == '_' || ft_isalnum(**str))
+		(*str)++;
 	if (inquotes || !temp)
 		return (!ft_strappend(*arg, temp));
 	next = ft_strchr(temp, ' ');
-	while (*next)
+	while (next)
 	{
-		if (!append_args(*arg + *argc, temp, next))
+		if (append_args(*arg + *argc, temp, next))
 			return (1);
 		parse_whtspc(argc, arg, &temp);
 		temp = next + 1;
@@ -111,7 +114,7 @@ static int	parse_quotes(char **arg, char **str, bool dquote)
 			return (1);
 		*tmp = '$';
 		*str = tmp + 1;
-		if (!parse_extens(NULL, &arg, str, true))
+		if (!parse_extens((int*)&dquote, &arg, str, true))
 			return (1);
 		tmp = ft_strchr(*str, '$');
 	}
