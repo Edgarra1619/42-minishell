@@ -4,8 +4,10 @@
 #include <minishell/builtins.h>
 #include <minishell/tokenizer.h>
 #include <minishell/error.h>
+#include <minishell/signals.h>
 #include <libft.h>
 
+#include <signal.h>
 #include <sys/wait.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -68,6 +70,8 @@ static int	exec_cmd(t_cmd *const cmd, const bool is_single_cmd)
 			exec_builtin(cmd);
 		return (0);
 	}
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 	i = -1;
 	while (++i < cmd->num_redirs)
 		if (redirect_fd(&cmd->redirs[i]))
