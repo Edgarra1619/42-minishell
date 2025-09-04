@@ -1,7 +1,8 @@
 #include <minishell/tokenizer.h>
+#include <minishell/pipeline.h>
+#include <minishell/error.h>
 #include <libft.h>
 
-#include <stdlib.h>
 #include <stdbool.h>
 
 static bool		is_prompt_empty(const char *prompt);
@@ -10,6 +11,8 @@ static t_cmd	*split_cmds(char *prompt, int num_cmds);
 
 int	tokenize_pipeline(t_pipeline *const pl)
 {
+	int	i;
+
 	pl->num_cmds = 0;
 	if (is_prompt_empty(pl->prompt))
 		return (0);
@@ -17,8 +20,9 @@ int	tokenize_pipeline(t_pipeline *const pl)
 		return (1);
 	pl->num_cmds = count_cmds(pl->prompt);
 	pl->cmds = split_cmds(pl->prompt, pl->num_cmds);
-	if (!pl->cmds)
-		exit(1);
+	i = -1;
+	while (++i < pl->num_cmds)
+		tokenize_cmd(pl->cmds + i);
 	return (0);
 }
 
@@ -51,7 +55,7 @@ static t_cmd	*split_cmds(char *prompt, int num_cmds)
 	int				i;
 
 	if (!cmds)
-		return (NULL);
+		error_exit();
 	cmds[0].cmd = prompt;
 	i = 1;
 	while (*prompt)

@@ -85,6 +85,8 @@ void	close_unused_fds(const t_cmd *const cmd)
 	}
 	i = -1;
 	while (++i < FD_MAX)
+	{
 		if (!fds[i])
 			close(i);
+	}
 }

@@ -1,11 +1,21 @@
 #include <minishell/minishell.h>
+#include <minishell/pipeline.h>
 #include <libft.h>
 
-#include <string.h>
+#include <stdlib.h>
 #include <errno.h>
 #include <unistd.h>
+#include <string.h>
 
-void	buffer_error(const char *str);
+int			print_error(const char *const cmd, const char *const path,
+				const char *const error);
+static void	buffer_error(const char *str);
+
+void	error_exit(void)
+{
+	clear_pipeline(NULL);
+	exit(print_error(NULL, NULL, NULL));
+}
 
 int	print_error(const char *const cmd, const char *const path,
 	const char *const error)
@@ -46,7 +56,7 @@ int	print_syntax_error(const char *const error)
 	return (-1);
 }
 
-void	buffer_error(const char *str)
+static void	buffer_error(const char *str)
 {
 	static char	buffer[ERROR_MAX];
 
