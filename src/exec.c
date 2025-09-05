@@ -16,18 +16,23 @@ static int	exec_binary(t_cmd *const cmd);
 
 void	exec_pipeline(t_pipeline *const pl)
 {
-	int		i;
-	t_cmd	*cmd;
+	const bool	is_single_cmd = pl->num_cmds == 1;
+	int			i;
+	t_cmd		*cmd;
 
+	if (!is_single_cmd)
+		update_shlvl(-1, true);
 	i = -1;
 	while (++i < pl->num_cmds)
 	{
 		cmd = pl->cmds + i;
 		if (i + 1 < pl->num_cmds)
 			pipe_cmds(cmd, cmd + 1);
-		exec_cmd(cmd, pl->num_cmds == 1);
+		exec_cmd(cmd, is_single_cmd);
 	}
 	close_unused_fds(NULL);
+	if (!is_single_cmd)
+		update_shlvl(1, true);
 }
 
 static void	exec_cmd(t_cmd *const cmd, const bool is_single_cmd)

@@ -18,7 +18,7 @@ void	update_pwd(const bool print_output)
 	if (pwd)
 	{
 		ft_strlcpy(buffer, "OLDPWD=", VAR_MAX);
-			ft_strlcat(buffer, pwd, VAR_MAX);
+		ft_strlcat(buffer, pwd, VAR_MAX);
 		set_var(buffer, print_output);
 	}
 	ft_strlcpy(buffer, "PWD=", VAR_MAX);
@@ -29,7 +29,7 @@ void	update_pwd(const bool print_output)
 
 void	update_shlvl(int add, const bool print_output)
 {
-	char *const shlvl = get_var("SHLVL");
+	char *const	shlvl = get_var("SHLVL");
 
 	if (!shlvl)
 	{
