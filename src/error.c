@@ -40,7 +40,7 @@ int	print_error(const char *const cmd, const char *const path,
 
 int	print_var_error(const char *const var, const char *const error)
 {
-	buffer_error("export: `");
+	buffer_error("export: '");
 	buffer_error(var);
 	buffer_error("': ");
 	buffer_error(error);

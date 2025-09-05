@@ -1,5 +1,15 @@
 #include <minishell/minishell.h>
+#include <minishell/env.h>
+#include <minishell/error.h>
 #include <libft.h>
+
+void	init_env(char **prev_envp)
+{
+	while (*prev_envp)
+		set_var(*prev_envp++, true);
+	update_pwd(true);
+	update_shlvl(1, true);
+}
 
 void	get_env(int **varc, char **vars, char ***envp, char **status)
 {
@@ -55,7 +65,7 @@ char	*get_var_safe(const char *const key)
 	return (NULL);
 }
 
-int	set_var(const char *const var)
+int	set_var(const char *const var, const bool print_output)
 {
 	const int	key_len = ft_strlen_delim(var, '=');
 	int			*varc;
@@ -63,7 +73,7 @@ int	set_var(const char *const var)
 	char		**envp;
 
 	get_env(&varc, &vars, &envp, NULL);
-	if (*varc >= ENV_MAX || !ft_strchr(var, '='))
+	if (validate_var(var, print_output) || !ft_strchr(var, '='))
 		return (1);
 	while (*envp && ft_strncmp(*envp, var, key_len + 1))
 		++envp;
@@ -80,10 +90,10 @@ int	set_var(const char *const var)
 
 int	remove_var(const char *const key)
 {
+	const size_t	key_len = ft_strlen(key);
 	int				*varc;
 	char			*vars;
 	char			**envp;
-	const size_t	key_len = ft_strlen(key);
 
 	get_env(&varc, &vars, &envp, NULL);
 	while (*envp)
@@ -91,18 +101,18 @@ int	remove_var(const char *const key)
 		if (key_len == ft_strlen_delim(*envp, '=')
 			&& !ft_strncmp(key, *envp, key_len))
 			break ;
-		++envp;
+		envp++;
 	}
 	if (!*envp)
 		return (1);
-	**envp = '\0';
+	**envp = 0;
 	*envp = NULL;
-	--*varc;
+	(*varc)--;
 	while (envp[1])
 	{
 		*envp = envp[1];
 		envp[1] = NULL;
-		++envp;
+		envp++;
 	}
 	return (0);
 }
