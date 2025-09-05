@@ -10,6 +10,7 @@ static char	*find_next_special(char *str);
 static int	parse_whtspc(int *argc, char ***arg, char **str);
 static int	parse_quotes(char **arg, char **str, bool dquote);
 static int	parse_extens(int *argc, char ***arg, char **str, bool inquotes);
+static int	parse_redirs(char **arg, char **str, t_cmd *cmd);
 
 int	tokenize_cmd(t_cmd *cmd)
 {
@@ -26,6 +27,7 @@ int	tokenize_cmd(t_cmd *cmd)
 		if (*tmp == '<' || *tmp == '>')
 		{
 			cmd->cmd = tmp + 1;
+			parse_redirs(cmd->argv + argc, &(cmd->cmd), cmd);
 			continue;
 		}
 		if (tmp != cmd->cmd && append_args(cmd->argv + argc, cmd->cmd, tmp))
@@ -41,6 +43,7 @@ int	tokenize_cmd(t_cmd *cmd)
 	return (0);
 }
 
+//TODO make it so expansion to empty string puts an empty string
 static int	parse_extens(int *argc, char ***arg, char **str, bool inquotes)
 {
 	char	*temp;
@@ -86,8 +89,89 @@ static int	append_args(char **arg, char *str, char *end)
 	return (!*arg);
 }
 
-static int	parse_redirs(t_cmd *cmd, char *str)
+static int	get_redirtype(char *str)
 {
+	while (*str)
+	{
+		if (*str == '<')
+		{
+			if (*(str + 1) == '<')
+				return (OPEN_HEREDOC);
+			if (*(str + 1) == '>')
+				return (OPEN_RDWR);
+			return (OPEN_READ);
+		}
+		if (*str == '>')
+		{
+			if (*(str + 1) == '<')
+				return (0);
+			if (*(str + 1) == '>')
+				return (OPEN_APPEND);
+			return (OPEN_WRITE);
+		}
+		str++;
+	}
+	return (0);
+}
+
+static int	get_redirfd(char **arg, char **str, int type)
+{
+	int			fd;
+	char	*tmp;
+
+	tmp = *str;
+	if (ft_atoi_safe(&fd, *str))
+		fd = -1;
+	while (*tmp != '<' && *tmp != '>')
+	{
+		if (!ft_isdigit(*tmp))
+			fd = -1;
+		tmp++;
+	}
+	if (fd < 0)
+	{
+		append_args(arg, *str, tmp);
+		if (type == OPEN_HEREDOC || type == OPEN_READ
+			|| type == OPEN_RDWR)
+			fd = 0;
+		if (type == OPEN_APPEND || type == OPEN_WRITE)
+			fd = 1;
+	}
+	*str = tmp + 1 + (type == OPEN_HEREDOC
+		|| type == OPEN_APPEND || type == OPEN_RDWR);
+	return (fd);
+}
+
+static int	parse_redirs(char **arg, char **str, t_cmd *cmd)
+{
+	const int	type = get_redirtype(*str);
+	char		*tmp;
+
+	cmd->redirs[cmd->num_redirs].source_fd = get_redirfd(arg, str, type);
+	while (ft_isspace(**str))
+		(*str)++;
+	/*
+	while (**str)
+	{
+		tmp = find_next_special(cmd->cmd);
+		if (*tmp == '<' || *tmp == '>')
+		{
+			cmd->cmd = tmp + 1;
+			parse_redirs(cmd->argv + argc, &(cmd->cmd), cmd);
+			continue;
+		}
+		if (tmp != cmd->cmd && append_args(cmd->argv + argc, cmd->cmd, tmp))
+			return (1);
+		cmd->cmd = tmp + !!*tmp;
+		if (ft_isspace(*tmp))
+			parse_whtspc(&argc, &(cmd->argv), &(cmd->cmd));
+		if (*tmp == '\'' || *tmp == '"')
+			parse_quotes(cmd->argv + argc, &cmd->cmd, *tmp == '"');
+		if (*tmp == '$')
+			parse_extens(&argc, &(cmd->argv), &(cmd->cmd), false);
+		tmp = find_next_special(*str);
+	}
+	*/
 	(void) cmd;
 	(void) str;
 	return (0);
