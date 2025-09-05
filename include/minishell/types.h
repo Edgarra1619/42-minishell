@@ -10,6 +10,7 @@ typedef enum e_open_flags
 {
 	OPEN_READ = O_RDONLY,
 	OPEN_WRITE = O_WRONLY | O_CREAT | O_TRUNC,
+	OPEN_RDWR = O_RDWR | O_CREAT,
 	OPEN_APPEND = O_WRONLY | O_CREAT | O_APPEND,
 	OPEN_HEREDOC
 }	t_open_flags;
