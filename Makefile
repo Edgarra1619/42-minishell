@@ -1,7 +1,6 @@
 NAME = minishell
 SRCS = main.c error.c env.c var.c pipeline.c cmd.c exec.c path.c fd.c \
-	   syntax.c pipeline_tokenizer.c cmd_tokenizer.c \
-	   $(BUILTDIR)/echo.c $(BUILTDIR)/pwd.c $(BUILTDIR)/cd.c $(BUILTDIR)/env.c \
+	   syntax.c signals.c pipeline_tokenizer.c cmd_tokenizer.c \
 	   $(BUILTDIR)/unset.c $(BUILTDIR)/export.c $(BUILTDIR)/exit.c
 INCDIR = ./include/
 SRCDIR = ./src/

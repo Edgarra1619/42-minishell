@@ -5,8 +5,11 @@
 #include <minishell/path.h>
 #include <minishell/builtins.h>
 #include <minishell/error.h>
+#include <minishell/signals.h>
 #include <libft.h>
 
+#include <signal.h>
+#include <sys/wait.h>
 #include <stdlib.h>
 #include <unistd.h>
 
@@ -47,6 +50,8 @@ static void	exec_cmd(t_cmd *const cmd, const bool is_single_cmd)
 			exec_builtin(cmd);
 		return ;
 	}
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 	if (is_builtin)
 		ret = exec_builtin(cmd);
 	else
