@@ -28,8 +28,8 @@ static int	verify_cmd_syntax(const char **cmd)
 	{
 		if (!has_cmd && !ft_isspace(**cmd))
 			has_cmd = true;
-		//if ((**cmd == '<' || **cmd == '>') && verify_redir_syntax(cmd))
-		//	return (1);
+		if ((**cmd == '<' || **cmd == '>') && verify_redir_syntax(cmd))
+			return (1);
 		else if ((**cmd == '\'' || **cmd == '"') && verify_quote_syntax(cmd))
 			return (1);
 		(*cmd)++;
