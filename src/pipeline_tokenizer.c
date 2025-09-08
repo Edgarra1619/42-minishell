@@ -1,6 +1,5 @@
 #include <minishell/tokenizer.h>
-#include <minishell/pipeline.h>
-#include <minishell/error.h>
+#include <minishell/exit.h>
 #include <libft.h>
 
 #include <stdbool.h>
@@ -9,7 +8,7 @@ static bool		is_prompt_empty(const char *prompt);
 static int		count_cmds(const char *prompt);
 static t_cmd	*split_cmds(char *prompt, int num_cmds);
 
-int	tokenize_pipeline(t_pipeline *const pl)
+int	tokenize_pipeline(t_pipeline *pl)
 {
 	int	i;
 
@@ -55,7 +54,7 @@ static t_cmd	*split_cmds(char *prompt, int num_cmds)
 	int				i;
 
 	if (!cmds)
-		error_exit();
+		error_exit(1);
 	cmds[0].cmd = prompt;
 	i = 1;
 	while (*prompt)

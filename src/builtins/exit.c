@@ -1,6 +1,7 @@
 #include <minishell/env.h>
 #include <minishell/pipeline.h>
 #include <minishell/error.h>
+#include <minishell/exit.h>
 #include <libft.h>
 
 #include <stdlib.h>
@@ -13,9 +14,8 @@ int	exit_builtin(char **argv, const bool print_output)
 
 	if (!argv[1])
 	{
-		clear_pipeline(NULL);
 		get_env(NULL, NULL, NULL, &env_status);
-		exit(*env_status);
+		clear_exit(*env_status);
 	}
 	if (argv[2])
 	{
@@ -29,6 +29,6 @@ int	exit_builtin(char **argv, const bool print_output)
 			print_error("exit", NULL, "numeric argument required");
 		return (1);
 	}
-	clear_pipeline(NULL);
-	exit(status);
+	clear_exit(status);
+	return (1);
 }

@@ -2,20 +2,11 @@
 #include <minishell/pipeline.h>
 #include <libft.h>
 
-#include <stdlib.h>
 #include <errno.h>
 #include <unistd.h>
 #include <string.h>
 
-int			print_error(const char *const cmd, const char *const path,
-				const char *const error);
 static void	buffer_error(const char *str);
-
-void	error_exit(void)
-{
-	clear_pipeline(NULL);
-	exit(print_error(NULL, NULL, NULL));
-}
 
 int	print_error(const char *const cmd, const char *const path,
 	const char *const error)

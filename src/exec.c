@@ -6,11 +6,11 @@
 #include <minishell/builtins.h>
 #include <minishell/error.h>
 #include <minishell/signals.h>
+#include <minishell/exit.h>
 #include <libft.h>
 
 #include <signal.h>
 #include <sys/wait.h>
-#include <stdlib.h>
 #include <unistd.h>
 
 static void	exec_cmd(t_cmd *const cmd, const bool is_single_cmd);
@@ -56,8 +56,7 @@ static void	exec_cmd(t_cmd *const cmd, const bool is_single_cmd)
 		ret = exec_builtin(cmd);
 	else
 		ret = exec_binary(cmd);
-	clear_pipeline(NULL);
-	exit(ret);
+	clear_exit(ret);
 }
 
 static int	exec_builtin(t_cmd *const cmd)
