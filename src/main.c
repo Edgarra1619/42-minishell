@@ -38,6 +38,7 @@ int	main(int argc, char **argv, char **prev_envp)
 		signal(SIGINT, cmd_handler);
 		signal(SIGQUIT, cmd_handler);
 		wait_pipeline(pl);
+		clear_pipeline(pl);
 	}
 	rl_clear_history();
 	return (*status);
