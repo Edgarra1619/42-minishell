@@ -64,10 +64,8 @@ int	ft_atoi_safe(int *const num_ptr, const char *str)
 		if (*str++ == '-')
 			sign = -1;
 	num = 0;
-	while (*str)
+	while (ft_isdigit(*str))
 	{
-		if (!ft_isdigit(*str))
-			return (1);
 		if (num * sign > INT_MAX || num * sign < INT_MIN)
 			return (1);
 		num = num * 10 + *str++ - '0';
