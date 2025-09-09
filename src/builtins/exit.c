@@ -1,11 +1,7 @@
 #include <minishell/env.h>
-#include <minishell/pipeline.h>
 #include <minishell/error.h>
 #include <minishell/exit.h>
 #include <libft.h>
-
-#include <stdlib.h>
-#include <stdbool.h>
 
 int	exit_builtin(char **argv, const bool print_output, const bool is_single_cmd)
 {

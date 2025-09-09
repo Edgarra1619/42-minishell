@@ -1,8 +1,6 @@
 #include <minishell/env.h>
-#include <minishell/exec.h>
 #include <minishell/signals.h>
 #include <minishell/tokenizer.h>
-#include <minishell/exec.h>
 #include <minishell/pipeline.h>
 #include <minishell/exit.h>
 #include <libft.h>
@@ -10,7 +8,6 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <signal.h>
-#include <stdlib.h>
 
 int	main(__attribute__((unused)) int argc,
 	__attribute__((unused)) char **argv,

@@ -1,6 +1,5 @@
 #include <minishell/minishell.h>
 #include <minishell/env.h>
-#include <minishell/error.h>
 #include <libft.h>
 
 void	init_env(char **prev_envp)

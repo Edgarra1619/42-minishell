@@ -1,4 +1,3 @@
-#include <minishell/minishell.h>
 #include <minishell/types.h>
 #include <minishell/path.h>
 #include <minishell/error.h>

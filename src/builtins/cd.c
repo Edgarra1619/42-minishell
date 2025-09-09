@@ -1,10 +1,8 @@
-#include <minishell/minishell.h>
 #include <minishell/env.h>
 #include <minishell/error.h>
 #include <libft.h>
 
 #include <unistd.h>
-#include <stdbool.h>
 
 static int	resolve_path(const char **path, bool *print_cwd,
 				bool print_output);

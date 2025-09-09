@@ -5,8 +5,8 @@
 #include <limits.h>
 #include <errno.h>
 
-int			validate_file_path(const char *const path);
-static int	find_cmd_path(const char *const cmd, char *const buffer);
+int			validate_file_path(const char *path);
+static int	find_cmd_path(const char *cmd, char *buffer);
 
 int	resolve_binary_path(const char *const cmd, char *const buffer)
 {
