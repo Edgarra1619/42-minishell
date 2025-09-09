@@ -38,5 +38,6 @@ int	main(__attribute__((unused)) int argc,
 		signal(SIGQUIT, cmd_handler);
 		wait_pipeline(pl);
 	}
+	ft_putstr_fd("exit\n", 2);
 	clear_exit(*status);
 }

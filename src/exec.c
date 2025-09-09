@@ -13,9 +13,9 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-static void	exec_cmd(t_cmd *const cmd, const bool is_single_cmd);
-static int	exec_builtin(t_cmd *const cmd);
-static int	exec_binary(t_cmd *const cmd);
+static void	exec_cmd(t_cmd *cmd, bool is_single_cmd);
+static int	exec_builtin(t_cmd *cmd, bool is_single_cmd);
+static int	exec_binary(t_cmd *cmd);
 
 void	exec_pipeline(t_pipeline *const pl)
 {
@@ -47,19 +47,19 @@ static void	exec_cmd(t_cmd *const cmd, const bool is_single_cmd)
 	if (cmd->pid > 0)
 	{
 		if (is_single_cmd && is_builtin)
-			exec_builtin(cmd);
+			exec_builtin(cmd, is_single_cmd);
 		return ;
 	}
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	if (is_builtin)
-		ret = exec_builtin(cmd);
+		ret = exec_builtin(cmd, is_single_cmd);
 	else
 		ret = exec_binary(cmd);
 	clear_exit(ret);
 }
 
-static int	exec_builtin(t_cmd *const cmd)
+static int	exec_builtin(t_cmd *const cmd, const bool is_single_cmd)
 {
 	const char *const	name = cmd->argv[0];
 	const bool			print_output = !cmd->pid;
@@ -77,7 +77,7 @@ static int	exec_builtin(t_cmd *const cmd)
 	if (!ft_strcmp(name, "unset"))
 		return (unset_builtin(cmd->argv));
 	if (!ft_strcmp(name, "exit"))
-		return (exit_builtin(cmd->argv, print_output));
+		return (exit_builtin(cmd->argv, print_output, is_single_cmd));
 	if (!print_output)
 		return (0);
 	if (!ft_strcmp(name, "echo"))
