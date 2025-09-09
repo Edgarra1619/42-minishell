@@ -1,11 +1,12 @@
 #include <minishell/minishell.h>
+#include <minishell/pipeline.h>
 #include <libft.h>
 
-#include <string.h>
 #include <errno.h>
 #include <unistd.h>
+#include <string.h>
 
-void	buffer_error(const char *str);
+static void	buffer_error(const char *str);
 
 int	print_error(const char *const cmd, const char *const path,
 	const char *const error)
@@ -30,7 +31,7 @@ int	print_error(const char *const cmd, const char *const path,
 
 int	print_var_error(const char *const var, const char *const error)
 {
-	buffer_error("export: `");
+	buffer_error("export: '");
 	buffer_error(var);
 	buffer_error("': ");
 	buffer_error(error);
@@ -46,7 +47,7 @@ int	print_syntax_error(const char *const error)
 	return (-1);
 }
 
-void	buffer_error(const char *str)
+static void	buffer_error(const char *str)
 {
 	static char	buffer[ERROR_MAX];
 

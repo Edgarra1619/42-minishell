@@ -15,21 +15,21 @@
 
 # include <stddef.h>
 
-int		ft_isalpha(const int c);
-int		ft_isdigit(const int c);
-int		ft_isalnum(const int c);
-int		ft_isascii(const int c);
-int		ft_isprint(const int c);
-int		ft_isspace(const int c);
+int		ft_isalpha(int c);
+int		ft_isdigit(int c);
+int		ft_isalnum(int c);
+int		ft_isascii(int c);
+int		ft_isprint(int c);
+int		ft_isspace(int c);
 size_t	ft_strlen(const char *s);
-size_t	ft_strlen_delim(const char *s, const char delim);
-int		ft_max(const int n1, const int n2);
-int		ft_min(const int n1, const int n2);
-int		ft_abs(const int n);
-int		ft_clamp(const int n, const int min, const int max);
-float	ft_clampf(const float n, const float min, const float max);
-int		ft_sign(const int n);
-float	ft_signf(const float n);
+size_t	ft_strlen_delim(const char *s, char delim);
+int		ft_max(int n1, int n2);
+int		ft_min(int n1, int n2);
+int		ft_abs(int n);
+int		ft_clamp(int n, int min, int max);
+float	ft_clampf(float n, float min, float max);
+int		ft_sign(int n);
+float	ft_signf(float n);
 void	*ft_memset(void *s, int c, size_t n);
 void	ft_bzero(void *s, size_t n);
 void	*ft_memcpy(void *dest, const void *src, size_t n);
@@ -51,18 +51,19 @@ int		ft_atoi_safe(int *num_ptr, const char *str);
 void	*ft_calloc(size_t nmemb, size_t size);
 void	*ft_realloc(void *ptr, size_t old_size, size_t new_size);
 char	*ft_strdup(const char *s);
-char	*ft_substr(char const *s, unsigned int start, size_t len);
+char	*ft_substr(const char *s, unsigned int start, size_t len);
 char	*ft_strjoin(const char *s1, const char *s2);
 char	*ft_strappend(char **str1, const char *str2);
 char	*ft_strtrim(const char *s1, const char *set);
 char	**ft_split(const char *s, char c);
-char	*ft_itoa(const int n);
-size_t	ft_itoa_cpy(char *str, const int n);
+void	*free_split(char **split);
+char	*ft_itoa(int n);
+size_t	ft_itoa_cpy(char *str, int n);
 char	*ft_strmapi(const char *s, char (*f)(unsigned int, char));
 void	ft_striteri(char *s, void (*f)(unsigned int, char *));
-void	ft_putchar_fd(const char c, const int fd);
-void	ft_putstr_fd(const char *s, const int fd);
-void	ft_putendl_fd(const char *s, const int fd);
+void	ft_putchar_fd(char c, int fd);
+void	ft_putstr_fd(const char *s, int fd);
+void	ft_putendl_fd(const char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
 
 typedef struct s_list
@@ -76,9 +77,9 @@ void	ft_lstadd_front(t_list **lst, t_list *new);
 int		ft_lstsize(t_list *lst);
 t_list	*ft_lstlast(t_list *lst);
 void	ft_lstadd_back(t_list **lst, t_list *new);
-void	ft_lstdelone(t_list *lst, void (*del)());
-void	ft_lstclear(t_list **lst, void (*del)());
-void	ft_lstiter(t_list *lst, void (*f)());
-t_list	*ft_lstmap(t_list *lst, void *(*f)(), void (*del)());
+void	ft_lstdelone(t_list *lst, void (*del)(void *));
+void	ft_lstclear(t_list **lst, void (*del)(void *));
+void	ft_lstiter(t_list *lst, void (*f)(void *));
+t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 
 #endif

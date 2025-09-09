@@ -51,17 +51,17 @@ static char	*get_string(const char *s, char c)
 	return (string);
 }
 
-static void	*free_strings(char **strings)
+void	*free_split(char **split)
 {
 	unsigned int	i;
 
 	i = 0;
-	while (strings[i])
+	while (split[i])
 	{
-		free(strings[i]);
+		free(split[i]);
 		i++;
 	}
-	free(strings);
+	free(split);
 	return (NULL);
 }
 
@@ -85,7 +85,7 @@ char	**ft_split(const char *s, char c)
 			in_string = 1;
 			strings[j] = get_string(&s[i], c);
 			if (!strings[j])
-				return (free_strings(strings));
+				return (free_split(strings));
 			j++;
 		}
 		i++;

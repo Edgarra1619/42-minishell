@@ -1,15 +1,11 @@
-#include <minishell/minishell.h>
 #include <minishell/env.h>
 #include <minishell/error.h>
 #include <libft.h>
 
 #include <unistd.h>
-#include <limits.h>
-#include <stdbool.h>
 
-static int	resolve_path(const char **const path, bool *const print_cwd,
-				const bool print_output);
-static void	update_pwd(void);
+static int	resolve_path(const char **path, bool *print_cwd,
+				bool print_output);
 
 int	cd_builtin(char **argv, const bool print_output)
 {
@@ -34,7 +30,7 @@ int	cd_builtin(char **argv, const bool print_output)
 	}
 	if (print_output && print_cwd)
 		ft_putendl_fd(path, 1);
-	update_pwd();
+	update_pwd(print_output);
 	return (0);
 }
 
@@ -64,20 +60,4 @@ static int	resolve_path(const char **const path, bool *const print_cwd,
 		*print_cwd = true;
 	}
 	return (0);
-}
-
-static void	update_pwd(void)
-{
-	const char	*pwd = get_var("PWD");
-	char		buffer[VAR_MAX];
-	char		cwd[PATH_MAX];
-
-	ft_strlcpy(buffer, "OLDPWD=", VAR_MAX);
-	if (pwd)
-		ft_strlcat(buffer, pwd, VAR_MAX);
-	set_var(buffer);
-	ft_strlcpy(buffer, "PWD=", VAR_MAX);
-	if (getcwd(cwd, PATH_MAX))
-		ft_strlcat(buffer, cwd, VAR_MAX);
-	set_var(buffer);
 }

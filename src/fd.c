@@ -1,7 +1,7 @@
-#include <minishell/minishell.h>
 #include <minishell/types.h>
 #include <minishell/path.h>
 #include <minishell/error.h>
+#include <minishell/exit.h>
 #include <libft.h>
 
 #include <readline/readline.h>
@@ -9,7 +9,7 @@
 #include <stdbool.h>
 #include <unistd.h>
 
-int	redirect_fd(t_redir *const redir)
+void	redirect_fd(t_redir *const redir)
 {
 	const static mode_t	open_mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
 
@@ -17,16 +17,15 @@ int	redirect_fd(t_redir *const redir)
 	{
 		if (!(redir->open_flags & O_WRONLY)
 			&& validate_file_path(redir->target_path))
-			return (1);
+			clear_exit(print_error(NULL, redir->target_path, NULL));
 		redir->target_fd
 			= open(redir->target_path, redir->open_flags, open_mode);
 		if (redir->target_fd == -1)
-			return (1);
+			clear_exit(print_error(NULL, redir->target_path, NULL));
 	}
 	if (dup2(redir->target_fd, redir->source_fd) == -1)
-		return (1);
+		error_exit(1);
 	close(redir->target_fd);
-	return (0);
 }
 
 int	open_heredoc(int *const target_fd, const char *const eof)
@@ -85,6 +84,8 @@ void	close_unused_fds(const t_cmd *const cmd)
 	}
 	i = -1;
 	while (++i < FD_MAX)
+	{
 		if (!fds[i])
 			close(i);
+	}
 }
