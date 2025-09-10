@@ -26,4 +26,3 @@ void	cmd_handler(int sig)
 	else
 		write(1, "Quit (core dumped)\n", 19);
 }
-

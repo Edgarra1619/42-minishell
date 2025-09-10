@@ -44,7 +44,7 @@ int	validate_var(const char *const var, const bool print_output)
 	int	*varc;
 
 	get_env(&varc, NULL, NULL, NULL);
-	if (!get_var(var) && *varc >= ENV_MAX)
+	if (*varc + 1 > ENV_MAX && !get_var(var))
 	{
 		if (print_output)
 			print_var_error(var, "too many variables");

@@ -7,6 +7,10 @@ int	env_builtin(void)
 
 	get_env(NULL, NULL, &envp, NULL);
 	while (*envp)
-		ft_putendl_fd(*envp++, 1);
+	{
+		if (ft_strchr(*envp, '='))
+			ft_putendl_fd(*envp, 1);
+		envp++;
+	}
 	return (0);
 }

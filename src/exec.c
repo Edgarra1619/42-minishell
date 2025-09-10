@@ -97,6 +97,7 @@ static int	exec_binary(t_cmd *const cmd)
 			return (print_error(*cmd->argv, NULL, NULL));
 		return (print_error(*cmd->argv, NULL, "command not found"));
 	}
+	remove_uninitialized_vars();
 	get_env(NULL, NULL, &envp, NULL);
 	execve(cmd->path, cmd->argv, envp);
 	return (print_error(*cmd->argv, NULL, NULL));
