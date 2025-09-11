@@ -84,7 +84,8 @@ static int	exec_builtin(t_cmd *const cmd, const bool is_single_cmd)
 		return (echo_builtin(cmd->argv));
 	if (!ft_strcmp(name, "env"))
 		return (env_builtin());
-	return (print_error(name, NULL, "builtin not found"));
+	print_error(name, NULL, "builtin not found");
+	return (1);
 }
 
 static int	exec_binary(t_cmd *const cmd)
@@ -93,12 +94,17 @@ static int	exec_binary(t_cmd *const cmd)
 
 	if (resolve_binary_path(cmd->argv[0], cmd->path))
 	{
-		if (ft_strchr(*cmd->argv, '/'))
-			return (print_error(*cmd->argv, NULL, NULL));
-		return (print_error(*cmd->argv, NULL, "command not found"));
+		if (!ft_strchr(*cmd->argv, '/'))
+		{
+			print_error(*cmd->argv, NULL, "command not found");
+			return (get_error_status());
+		}
+		print_error(*cmd->argv, NULL, NULL);
+		return (get_error_status());
 	}
 	remove_uninitialized_vars();
 	get_env(NULL, NULL, &envp, NULL);
 	execve(cmd->path, cmd->argv, envp);
-	return (print_error(*cmd->argv, NULL, NULL));
+	print_error(*cmd->argv, NULL, NULL);
+	return (get_error_status());
 }

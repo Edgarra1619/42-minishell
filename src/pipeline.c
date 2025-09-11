@@ -35,14 +35,20 @@ void	clear_pipeline(t_pipeline *pl)
 void	wait_pipeline(t_pipeline *const pl)
 {
 	int		i;
-	char	*status;
+	int		status;
+	char	*env_status;
 
-	get_env(NULL, NULL, NULL, &status);
+	get_env(NULL, NULL, NULL, &env_status);
 	i = 0;
 	while (i < pl->num_cmds && pl->cmds[i].pid > 0)
 	{
-		waitpid(pl->cmds[i].pid, &pl->cmds[i].status, 0);
-		*status = WEXITSTATUS(pl->cmds[i].status);
+		waitpid(pl->cmds[i].pid, &status, 0);
 		i++;
 	}
+	if (WIFEXITED(status))
+		*env_status = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		*env_status = 128 + WTERMSIG(status);
+	else
+		*env_status = 1;
 }

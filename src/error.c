@@ -8,6 +8,15 @@
 
 static void	buffer_error(const char *str);
 
+int	get_error_status(void)
+{
+	if (errno == 2)
+		return (127);
+	if (errno == 13 || errno == 21)
+		return (126);
+	return (1);
+}
+
 int	print_error(const char *const cmd, const char *const path,
 	const char *const error)
 {
@@ -44,7 +53,7 @@ int	print_syntax_error(const char *const error)
 	buffer_error("syntax error: ");
 	buffer_error(error);
 	buffer_error(NULL);
-	return (-1);
+	return (1);
 }
 
 static void	buffer_error(const char *str)
