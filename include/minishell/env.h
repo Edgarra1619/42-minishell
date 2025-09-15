@@ -9,7 +9,8 @@ char	*get_var(const char *key);
 char	*get_var_safe(const char *key);
 int		set_var(const char *var, bool print_output);
 int		validate_var(const char *var, bool print_output);
-int		remove_var(const char *key);
+int		remove_var(char *key);
+void	remove_uninitialized_vars(void);
 void	update_pwd(bool print_output);
 void	update_shlvl(int add, bool print_output);
 

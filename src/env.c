@@ -6,6 +6,7 @@ void	init_env(char **prev_envp)
 {
 	while (*prev_envp)
 		set_var(*prev_envp++, true);
+	remove_uninitialized_vars();
 	update_pwd(true);
 	update_shlvl(1, true);
 }
@@ -29,7 +30,7 @@ void	get_env(int **varc, char **vars, char ***envp, char **status)
 
 char	*get_var(const char *const key)
 {
-	const size_t	key_len = ft_strlen(key);
+	const size_t	key_len = ft_strlen_delim(key, '=');
 	char			**envp;
 
 	get_env(NULL, NULL, &envp, NULL);
@@ -38,7 +39,7 @@ char	*get_var(const char *const key)
 		if (key_len == ft_strlen_delim(*envp, '=')
 			&& !ft_strncmp(key, *envp, key_len))
 			return (*envp + key_len + 1);
-		++envp;
+		envp++;
 	}
 	return (NULL);
 }
@@ -59,22 +60,23 @@ char	*get_var_safe(const char *const key)
 		if (key_len == ft_strlen_delim(*envp, '=')
 			&& !ft_strncmp(key, *envp, key_len))
 			return (*envp + key_len + 1);
-		++envp;
+		envp++;
 	}
 	return (NULL);
 }
 
 int	set_var(const char *const var, const bool print_output)
 {
-	const int	key_len = ft_strlen_delim(var, '=');
-	int			*varc;
-	char		*vars;
-	char		**envp;
+	const size_t	key_len = ft_strlen_delim(var, '=');
+	int				*varc;
+	char			*vars;
+	char			**envp;
 
 	get_env(&varc, &vars, &envp, NULL);
-	if (validate_var(var, print_output) || !ft_strchr(var, '='))
+	if (validate_var(var, print_output))
 		return (1);
-	while (*envp && ft_strncmp(*envp, var, key_len + 1))
+	while (*envp && !(key_len == ft_strlen_delim(*envp, '=')
+			&& !ft_strncmp(*envp, var, key_len)))
 		++envp;
 	if (!*envp)
 	{
@@ -87,9 +89,9 @@ int	set_var(const char *const var, const bool print_output)
 	return (0);
 }
 
-int	remove_var(const char *const key)
+int	remove_var(char *const key)
 {
-	const size_t	key_len = ft_strlen(key);
+	const size_t	key_len = ft_strlen_delim(key, '=');
 	int				*varc;
 	char			*vars;
 	char			**envp;
@@ -114,4 +116,17 @@ int	remove_var(const char *const key)
 		envp++;
 	}
 	return (0);
+}
+
+void	remove_uninitialized_vars(void)
+{
+	char	**envp;
+
+	get_env(NULL, NULL, &envp, NULL);
+	while (*envp)
+	{
+		if (!ft_strchr(*envp, '='))
+			remove_var(*envp);
+		envp++;
+	}
 }

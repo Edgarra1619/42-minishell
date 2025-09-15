@@ -31,7 +31,6 @@ typedef struct s_cmd
 	int		num_redirs;
 	t_redir	redirs[REDIR_MAX];
 	pid_t	pid;
-	int		status;
 }	t_cmd;
 
 typedef struct s_pipeline

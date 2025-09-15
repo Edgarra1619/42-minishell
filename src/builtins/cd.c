@@ -15,7 +15,7 @@ int	cd_builtin(char **argv, const bool print_output)
 	if (argv[1] && argv[2])
 	{
 		if (print_output)
-			return (print_error("cd", NULL, "too many arguments"));
+			print_error("cd", NULL, "too many arguments");
 		return (1);
 	}
 	if (resolve_path(&path, &print_cwd, print_output))
@@ -25,7 +25,7 @@ int	cd_builtin(char **argv, const bool print_output)
 	if (chdir(path))
 	{
 		if (print_output)
-			return (print_error("cd", path, NULL));
+			print_error("cd", path, NULL);
 		return (1);
 	}
 	if (print_output && print_cwd)
@@ -44,7 +44,7 @@ static int	resolve_path(const char **const path, bool *const print_cwd,
 		if (!*path)
 		{
 			if (print_output)
-				return (print_error("cd", NULL, "HOME not set"));
+				print_error("cd", NULL, "HOME not set");
 			return (1);
 		}
 	}
@@ -54,7 +54,7 @@ static int	resolve_path(const char **const path, bool *const print_cwd,
 		if (!*path)
 		{
 			if (print_output)
-				return (print_error("cd", NULL, "OLDPWD not set"));
+				print_error("cd", NULL, "OLDPWD not set");
 			return (1);
 		}
 		*print_cwd = true;

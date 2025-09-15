@@ -1,3 +1,4 @@
+#include <minishell/env.h>
 #include <minishell/tokenizer.h>
 #include <minishell/exit.h>
 #include <libft.h>
@@ -10,13 +11,18 @@ static t_cmd	*split_cmds(char *prompt, int num_cmds);
 
 int	tokenize_pipeline(t_pipeline *pl)
 {
-	int	i;
+	char	*status;
+	int		i;
 
 	pl->num_cmds = 0;
 	if (is_prompt_empty(pl->prompt))
-		return (0);
-	if (verify_prompt_syntax(pl->prompt))
 		return (1);
+	if (verify_prompt_syntax(pl->prompt))
+	{
+		get_env(NULL, NULL, NULL, &status);
+		*status = 2;
+		return (1);
+	}
 	pl->num_cmds = count_cmds(pl->prompt);
 	pl->cmds = split_cmds(pl->prompt, pl->num_cmds);
 	i = -1;
