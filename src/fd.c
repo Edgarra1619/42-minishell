@@ -13,7 +13,7 @@ void	redirect_fd(t_redir *const redir)
 {
 	const static mode_t	open_mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
 
-	if (redir->target_path)
+	if (redir->target_path && redir->open_flags != OPEN_HEREDOC)
 	{
 		if (!(redir->open_flags & O_WRONLY)
 			&& validate_file_path(redir->target_path))
