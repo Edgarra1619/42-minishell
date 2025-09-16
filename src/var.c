@@ -30,13 +30,22 @@ void	update_pwd(const bool print_output)
 void	update_shlvl(int add, const bool print_output)
 {
 	char *const	shlvl = get_var("SHLVL");
+	int			lvl;
 
 	if (!shlvl)
 	{
 		set_var("SHLVL=1", print_output);
 		return ;
 	}
-	ft_itoa_cpy(shlvl, ft_max(ft_atoi(shlvl) + add, 0));
+	lvl = ft_atoi(shlvl);
+	if (lvl >= 999)
+	{
+		print_error(NULL, NULL,
+			"warning: shell level too high, resetting to 1");
+		set_var("SHLVL=1", print_output);
+		return ;
+	}
+	ft_itoa_cpy(shlvl, ft_max(lvl + add, 0));
 }
 
 int	validate_var(const char *const var, const bool print_output)
