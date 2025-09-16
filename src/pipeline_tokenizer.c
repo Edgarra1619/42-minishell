@@ -27,7 +27,8 @@ int	tokenize_pipeline(t_pipeline *pl)
 	pl->cmds = split_cmds(pl->prompt, pl->num_cmds);
 	i = -1;
 	while (++i < pl->num_cmds)
-		tokenize_cmd(pl->cmds + i);
+		if (tokenize_cmd(pl->cmds + i))
+			return (1);
 	return (0);
 }
 
