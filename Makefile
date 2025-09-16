@@ -1,6 +1,6 @@
 NAME = minishell
-SRCS = main.c error.c exit.c env.c var.c pipeline.c cmd.c exec.c path.c fd.c \
-	   syntax.c signals.c pipeline_tokenizer.c cmd_tokenizer.c \
+SRCS = main.c error.c exit.c env.c env2.c var.c pipeline.c cmd.c exec.c path.c \
+	   fd.c syntax.c signals.c pipeline_tokenizer.c cmd_tokenizer.c \
 	   $(BUILTDIR)/unset.c $(BUILTDIR)/export.c $(BUILTDIR)/exit.c \
 	   $(BUILTDIR)/echo.c $(BUILTDIR)/cd.c $(BUILTDIR)/pwd.c \
 	   $(BUILTDIR)/env.c
@@ -15,7 +15,8 @@ CFLAGS = -Wall -Wextra -gdwarf-4 $(INCFLAGS)
 INCFLAGS = -I $(INCDIR) -I $(LFTDIR)/include/
 LIBFLAGS = -lreadline
 
-VALGFLAGS = --track-origins=yes --leak-check=full --show-leak-kinds=all --suppressions=readline.supp
+VALGFLAGS = --track-origins=yes --leak-check=full --show-leak-kinds=all \
+			--suppressions=readline.supp
 
 OBJS = $(patsubst %.c, $(OBJDIR)%.o, $(SRCS))
 LFT = $(LFTDIR)/libft.a

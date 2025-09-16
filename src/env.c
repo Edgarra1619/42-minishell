@@ -30,22 +30,6 @@ void	get_env(int **varc, char **vars, char ***envp, char **status)
 
 char	*get_var(const char *const key)
 {
-	const size_t	key_len = ft_strlen_delim(key, '=');
-	char			**envp;
-
-	get_env(NULL, NULL, &envp, NULL);
-	while (*envp)
-	{
-		if (key_len == ft_strlen_delim(*envp, '=')
-			&& !ft_strncmp(key, *envp, key_len))
-			return (*envp + key_len + 1);
-		envp++;
-	}
-	return (NULL);
-}
-
-char	*get_var_safe(const char *const key)
-{
 	size_t	key_len;
 	char	**envp;
 
@@ -116,17 +100,4 @@ int	remove_var(char *const key)
 		envp++;
 	}
 	return (0);
-}
-
-void	remove_uninitialized_vars(void)
-{
-	char	**envp;
-
-	get_env(NULL, NULL, &envp, NULL);
-	while (*envp)
-	{
-		if (!ft_strchr(*envp, '='))
-			remove_var(*envp);
-		envp++;
-	}
 }

@@ -3,41 +3,7 @@
 #include <minishell/error.h>
 #include <libft.h>
 
-#include <stdbool.h>
-#include <limits.h>
-#include <unistd.h>
-
 static int	is_valid_key(const char *var);
-
-void	update_pwd(const bool print_output)
-{
-	char *const	pwd = get_var("PWD");
-	char		buffer[VAR_MAX];
-	char		cwd[PATH_MAX];
-
-	if (pwd)
-	{
-		ft_strlcpy(buffer, "OLDPWD=", VAR_MAX);
-		ft_strlcat(buffer, pwd, VAR_MAX);
-		set_var(buffer, print_output);
-	}
-	ft_strlcpy(buffer, "PWD=", VAR_MAX);
-	if (getcwd(cwd, PATH_MAX))
-		ft_strlcat(buffer, cwd, VAR_MAX);
-	set_var(buffer, print_output);
-}
-
-void	update_shlvl(int add, const bool print_output)
-{
-	char *const	shlvl = get_var("SHLVL");
-
-	if (!shlvl)
-	{
-		set_var("SHLVL=1", print_output);
-		return ;
-	}
-	ft_itoa_cpy(shlvl, ft_max(ft_atoi(shlvl) + add, 0));
-}
 
 int	validate_var(const char *const var, const bool print_output)
 {

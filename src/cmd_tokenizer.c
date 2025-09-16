@@ -62,7 +62,7 @@ static int	parse_extens(int *argc, char ***arg, char **str, bool inquotes)
 	}
 	if (!(**str == '_' || ft_isalpha(**str)))
 		return (!ft_strappend(*arg + *argc * !inquotes, "$"));
-	temp = get_var_safe(*str);
+	temp = get_var(*str);
 	while (**str == '_' || ft_isalnum(**str))
 		(*str)++;
 	if (inquotes || !temp)
