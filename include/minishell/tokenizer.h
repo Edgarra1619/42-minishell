@@ -3,8 +3,16 @@
 
 # include <minishell/types.h>
 
-int	tokenize_pipeline(t_pipeline *pl);
-int	tokenize_cmd(t_cmd *cmd);
-int	verify_prompt_syntax(const char *prompt);
+# include <stdbool.h>
+
+int		tokenize_pipeline(t_pipeline *pl);
+int		tokenize_cmd(t_cmd *cmd);
+int		verify_prompt_syntax(const char *prompt);
+int		append_args(char **arg, char *str, char *end);
+char	*find_next_special(char *str);
+int		parse_whtspc(int *argc, char ***arg, char **str);
+int		parse_quotes(char **arg, char **str, bool dquote);
+int		parse_expans(int *argc, char ***arg, char **str, bool inquotes);
+int		parse_redirs(char **arg, t_cmd *cmd);
 
 #endif

@@ -25,7 +25,11 @@ void	clear_pipeline(t_pipeline *pl)
 		cmd = pl->cmds + pl->num_cmds;
 		free_split(cmd->argv);
 		while (cmd->num_redirs--)
+		{
+			if (cmd->redirs[cmd->num_redirs].target_path)
+				free(cmd->redirs[cmd->num_redirs].target_path[0]);
 			free(cmd->redirs[cmd->num_redirs].target_path);
+		}
 	}
 	pl->num_cmds = 0;
 	free(pl->cmds);

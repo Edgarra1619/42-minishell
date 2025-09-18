@@ -13,15 +13,16 @@ void	redirect_fd(t_redir *const redir)
 {
 	const static mode_t	open_mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
 
-	if (redir->target_path && redir->open_flags != OPEN_HEREDOC)
+	if (redir->target_path && redir->open_flags != OPEN_HEREDOC
+		&& *(redir->target_path))
 	{
 		if (!(redir->open_flags & O_WRONLY)
-			&& validate_file_path(redir->target_path))
-			clear_exit(print_error(NULL, redir->target_path, NULL));
+			&& validate_file_path(*(redir->target_path)))
+			clear_exit(print_error(NULL, *(redir->target_path), NULL));
 		redir->target_fd
-			= open(redir->target_path, redir->open_flags, open_mode);
+			= open(*(redir->target_path), redir->open_flags, open_mode);
 		if (redir->target_fd == -1)
-			clear_exit(print_error(NULL, redir->target_path, NULL));
+			clear_exit(print_error(NULL, *(redir->target_path), NULL));
 	}
 	if (dup2(redir->target_fd, redir->source_fd) == -1)
 		error_exit(1);

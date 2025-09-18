@@ -1,12 +1,15 @@
+#include <minishell/signals.h>
 #include <minishell/minishell.h>
 
 #include <readline/readline.h>
 #include <signal.h>
 #include <unistd.h>
 
+int	g_lastsignal;
+
 void	heredoc_handler(int sig)
 {
-	(void) sig;
+	g_lastsignal = sig;
 }
 
 void	prompt_handler(int sig)
