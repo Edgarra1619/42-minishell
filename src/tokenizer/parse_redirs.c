@@ -70,7 +70,6 @@ int	parse_redirs(char **arg, t_cmd *cmd)
 {
 	t_redir *const	redir = cmd->redirs + cmd->num_redirs++;
 	int				argc;
-	__sighandler_t	tmp;
 
 	redir->open_flags = get_redirtype(cmd->cmd);
 	argc = 0;
@@ -90,11 +89,7 @@ int	parse_redirs(char **arg, t_cmd *cmd)
 	if (!redir->target_path[0] || !redir->target_path[0][0])
 		return (print_syntax_error("incomplete redirection"));
 	if (redir->open_flags == OPEN_HEREDOC)
-	{
-		tmp = signal(SIGINT, heredoc_handler);
 		open_heredoc(&(redir->target_fd), redir->target_path[0]);
-		signal(SIGINT, tmp);
-	}
 	return (0);
 }
 

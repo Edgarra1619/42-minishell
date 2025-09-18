@@ -2,6 +2,7 @@
 #include <minishell/minishell.h>
 
 #include <readline/readline.h>
+#include <fcntl.h>
 #include <signal.h>
 #include <unistd.h>
 
@@ -9,6 +10,8 @@ int	g_lastsignal;
 
 void	heredoc_handler(int sig)
 {
+	write(1, "\n", 1);
+	close(0);
 	g_lastsignal = sig;
 }
 
