@@ -79,8 +79,12 @@ int	parse_redirs(char **arg, t_cmd *cmd)
 		(cmd->cmd)++;
 	redir->target_path = ft_calloc(sizeof(char *), argc + 2);
 	while (*cmd->cmd)
+	{
 		if (parse_next_special(&(redir->target_path), &argc, cmd, false))
 			return (1);
+		if (cmd->cmd[-1] == ' ')
+			break ;
+	}
 	if (argc > 0)
 		return (print_syntax_error("ambiguous redirection"));
 	if (!redir->target_path[0] || !redir->target_path[0][0])
