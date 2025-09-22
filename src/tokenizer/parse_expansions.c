@@ -17,7 +17,7 @@ static int	expand_qm(int *argc, char ***arg, char **str, const bool inquotes)
 	ft_strappend(*arg + *argc * !inquotes, temp);
 	free(temp);
 	(*str)++;
-	if (!!*(*arg + *argc * !inquotes))
+	if (!*(*arg + *argc * !inquotes))
 		clear_exit (1);
 	return (0);
 }
