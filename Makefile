@@ -13,7 +13,7 @@ OBJDIR = ./obj/
 LFTDIR = ./libft/
 
 CC = cc
-CFLAGS = -Wall -Wextra -gdwarf-4 $(INCFLAGS)
+CFLAGS = -Wall -Wextra -Werror -gdwarf-4 $(INCFLAGS)
 INCFLAGS = -I $(INCDIR) -I $(LFTDIR)/include/
 LIBFLAGS = -lreadline
 

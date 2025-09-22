@@ -8,6 +8,7 @@ void	get_env(int **varc, char **vars, char ***envp, char **status);
 char	*get_var(const char *key);
 int		set_var(const char *var, bool print_output);
 int		validate_var(const char *var, bool print_output);
+int		is_valid_key(const char *var);
 int		remove_var(char *key);
 void	remove_uninitialized_vars(void);
 void	update_pwd(bool print_output);

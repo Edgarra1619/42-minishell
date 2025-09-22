@@ -75,7 +75,7 @@ static int	exec_builtin(t_cmd *const cmd, const bool is_single_cmd)
 	if (!ft_strcmp(name, "export"))
 		return (export_builtin(cmd->argv, print_output));
 	if (!ft_strcmp(name, "unset"))
-		return (unset_builtin(cmd->argv));
+		return (unset_builtin(cmd->argv, print_output));
 	if (!ft_strcmp(name, "exit"))
 		return (exit_builtin(cmd->argv, print_output, is_single_cmd));
 	if (!print_output)
