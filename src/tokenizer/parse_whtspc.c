@@ -12,7 +12,8 @@ int	parse_whtspc(int *argc, char ***arg, char **str)
 	if (!((*arg)[*argc]))
 		return (0);
 	(*argc)++;
-	new = ft_realloc(*arg, sizeof(char*) * (*argc + 1), sizeof(char*) * (*argc + 2));
+	new = ft_realloc(*arg, sizeof(char *) * (*argc + 1),
+			sizeof(char*) * (*argc + 2));
 	if (!new)
 	{
 		new = *arg;

@@ -10,27 +10,8 @@
 #include <stdlib.h>
 #include <signal.h>
 
-static void	heredoc_expand_line
-				(char **line, char *input)
-{
-	char		*tmp;
-
-	tmp = ft_strchr(input, '$');
-	while (tmp)
-	{
-		if (append_args(line, input, tmp))
-			clear_exit(1);
-		input = tmp + 1;
-		if (parse_expans(NULL, &line, &input, true))
-			clear_exit(1);
-		tmp = ft_strchr(input, '$');
-	}
-	if (!ft_strappend(line, input))
-		clear_exit(1);
-}
-
-static int 	heredoc_parse_line
-				(const int fd, char *input, const char *const eof)
+static
+int	heredoc_parse_line(const int fd, char *input, const char *const eof)
 {
 	char	*line;
 
@@ -41,7 +22,7 @@ static int 	heredoc_parse_line
 		return (1);
 	}
 	line = NULL;
-	heredoc_expand_line(&line, input);
+	expand_str(&line, &input);
 	if (!ft_strcmp(line, eof))
 	{
 		free(line);
@@ -78,4 +59,3 @@ int	open_heredoc(int *const target_fd, const char *const eof)
 	close(stdinfd);
 	return (fds[0] != 0);
 }
-

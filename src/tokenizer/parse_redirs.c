@@ -7,9 +7,6 @@
 
 #include <libft.h>
 
-#include <signal.h>
-#include <stdlib.h>
-
 int	parse_next_special(char ***arg, int *argc, t_cmd *cmd, bool parse_spaces);
 
 static int	get_redirtype(char *str)
@@ -40,7 +37,7 @@ static int	get_redirtype(char *str)
 static int	get_redirfd(char **arg, char **str, int type)
 {
 	int			fd;
-	char	*tmp;
+	char		*tmp;
 
 	tmp = *str;
 	if (ft_atoi_safe(&fd, *str))
@@ -53,7 +50,7 @@ static int	get_redirfd(char **arg, char **str, int type)
 	}
 	if (fd < 0 || *str == tmp)
 	{
-		if(*str != tmp)
+		if (*str != tmp)
 			append_args(arg, *str, tmp);
 		if (type == OPEN_HEREDOC || type == OPEN_READ
 			|| type == OPEN_RDWR)
@@ -62,7 +59,7 @@ static int	get_redirfd(char **arg, char **str, int type)
 			fd = 1;
 	}
 	*str = tmp + 1 + (type == OPEN_HEREDOC
-		|| type == OPEN_APPEND || type == OPEN_RDWR);
+			|| type == OPEN_APPEND || type == OPEN_RDWR);
 	return (fd);
 }
 
@@ -92,4 +89,3 @@ int	parse_redirs(char **arg, t_cmd *cmd)
 		return (open_heredoc(&(redir->target_fd), redir->target_path[0]));
 	return (0);
 }
-

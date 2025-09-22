@@ -6,6 +6,24 @@
 
 #include <stdlib.h>
 
+void	expand_str(char **line, char **input)
+{
+	char		*tmp;
+
+	tmp = ft_strchr(*input, '$');
+	while (tmp)
+	{
+		if (append_args(line, *input, tmp))
+			clear_exit(1);
+		*input = tmp + 1;
+		if (parse_expans(NULL, &line, input, true))
+			clear_exit(1);
+		tmp = ft_strchr(*input, '$');
+	}
+	if (!ft_strappend(line, *input))
+		clear_exit(1);
+}
+
 static int	expand_qm(int *argc, char ***arg, char **str, const bool inquotes)
 {
 	char	*temp;
@@ -52,7 +70,7 @@ int	parse_expans(int *argc, char ***arg, char **str, bool inquotes)
 		return (expand_qm(argc, arg, str, inquotes));
 	if (!(**str == '_' || ft_isalpha(**str)))
 	{
-		if(!ft_strappend(*arg + *argc * !inquotes, "$"))
+		if (!ft_strappend(*arg + *argc * !inquotes, "$"))
 			clear_exit(1);
 		else
 			return (0);

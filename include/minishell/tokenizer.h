@@ -9,6 +9,7 @@ int		tokenize_pipeline(t_pipeline *pl);
 int		tokenize_cmd(t_cmd *cmd);
 int		verify_prompt_syntax(const char *prompt);
 int		append_args(char **arg, char *str, char *end);
+void	expand_str(char **line, char **input);
 char	*find_next_special(char *str);
 int		parse_whtspc(int *argc, char ***arg, char **str);
 int		parse_quotes(char **arg, char **str, bool dquote);

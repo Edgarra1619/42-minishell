@@ -7,7 +7,6 @@
 int	parse_quotes(char **arg, char **str, bool dquote)
 {
 	char *const	end = ft_strchr(*str, '\'' - 5 * dquote);
-	char		*tmp;
 
 	*end = 0;
 	if (!dquote)
@@ -17,16 +16,7 @@ int	parse_quotes(char **arg, char **str, bool dquote)
 		*str = end + 1;
 		return (!*arg);
 	}
-	tmp = ft_strchr(*str, '$');
-	while (tmp)
-	{
-		if (append_args(arg, *str, tmp))
-			clear_exit(1);
-		*str = tmp + 1;
-		if (parse_expans(NULL, &arg, str, true))
-			clear_exit(1);
-		tmp = ft_strchr(*str, '$');
-	}
+	expand_str(arg, str);
 	if (!ft_strappend(arg, *str))
 		clear_exit(1);
 	*end = '"';
