@@ -3,7 +3,7 @@ SRCS = main.c error.c exit.c env.c env2.c var.c pipeline.c cmd.c exec.c path.c f
 	   syntax.c signals.c \
 	   tokenizer/pipeline_tokenizer.c tokenizer/cmd_tokenizer.c \
 	   tokenizer/parse_expansions.c tokenizer/parse_whtspc.c \
-	   tokenizer/parse_redirs.c tokenizer/parse_quotes.c \
+	   tokenizer/parse_redirs.c tokenizer/parse_quotes.c tokenizer/heredoc.c \
 	   builtins/unset.c builtins/export.c builtins/exit.c \
 	   builtins/echo.c builtins/cd.c builtins/pwd.c \
 	   builtins/env.c

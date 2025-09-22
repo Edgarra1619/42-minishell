@@ -89,7 +89,7 @@ int	parse_redirs(char **arg, t_cmd *cmd)
 	if (!redir->target_path[0] || !redir->target_path[0][0])
 		return (print_syntax_error("incomplete redirection"));
 	if (redir->open_flags == OPEN_HEREDOC)
-		open_heredoc(&(redir->target_fd), redir->target_path[0]);
+		return (open_heredoc(&(redir->target_fd), redir->target_path[0]));
 	return (0);
 }
 
