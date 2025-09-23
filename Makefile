@@ -1,9 +1,22 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: edgribei <edgribei@student.42porto.com>    +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2025/09/23 14:47:25 by edgribei          #+#    #+#              #
+#    Updated: 2025/09/23 14:51:46 by edgribei         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 NAME = minishell
-SRCS = main.c error.c exit.c env.c env2.c var.c pipeline.c cmd.c exec.c path.c fd.c \
-	   syntax.c signals.c \
-	   tokenizer/pipeline_tokenizer.c tokenizer/cmd_tokenizer.c \
-	   tokenizer/parse_expansions.c tokenizer/parse_whtspc.c \
-	   tokenizer/parse_redirs.c tokenizer/parse_quotes.c tokenizer/heredoc.c \
+SRCS = main.c error.c exit.c env.c env2.c var.c pipeline.c cmd.c exec.c path.c \
+	   fd.c signals.c \
+	   tokenizer/syntax.c tokenizer/pipeline_tokenizer.c \
+	   tokenizer/cmd_tokenizer.c tokenizer/parse_expansions.c \
+	   tokenizer/parse_whtspc.c tokenizer/parse_redirs.c \
+	   tokenizer/parse_quotes.c tokenizer/heredoc.c \
 	   builtins/unset.c builtins/export.c builtins/exit.c \
 	   builtins/echo.c builtins/cd.c builtins/pwd.c \
 	   builtins/env.c
@@ -43,8 +56,8 @@ $(OBJS): $(OBJDIR)%.o: $(SRCDIR)%.c
 	mkdir -p $(OBJDIR) $(OBJDIR)/builtins $(OBJDIR)/tokenizer
 	$(CC) $(CFLAGS) -o $@ -c $<
 
-test: $(NAME)
-	./$(NAME)
+$(LFT):
+	make -C $(LFTDIR)
 
 gprof: $(NAME)
 	./$(NAME)
@@ -60,5 +73,3 @@ gdb: $(NAME)
 vgdb: $(NAME)
 	valgrind $(VALGFLAGS) --vgdb=full --vgdb-error=0 ./$(NAME)
 
-$(LFT):
-	make -C $(LFTDIR)

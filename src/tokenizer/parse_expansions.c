@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_expansions.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: edgribei <edgribei@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/23 14:47:02 by edgribei          #+#    #+#             */
+/*   Updated: 2025/09/23 14:47:04 by edgribei         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <minishell/env.h>
 #include <minishell/exit.h>
 #include <minishell/tokenizer.h>
@@ -57,7 +69,6 @@ static void	expand_var(char **value, int *argc, char ***arg)
 		clear_exit (1);
 }
 
-//TODO make it so expansion to empty string puts an empty string
 int	parse_expans(int *argc, char ***arg, char **str, bool inquotes)
 {
 	int		fake_argc;
