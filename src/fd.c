@@ -15,8 +15,7 @@ void	redirect_fd(t_redir *const redir)
 	if (redir->target_path && redir->open_flags != OPEN_HEREDOC
 		&& *(redir->target_path))
 	{
-		if (redir->open_flags == OPEN_READ
-			&& validate_file_path(*redir->target_path))
+		if (redir->open_flags == OPEN_READ && access(*redir->target_path, F_OK))
 			clear_exit(print_error(NULL, *(redir->target_path), NULL));
 		redir->target_fd
 			= open(*(redir->target_path), redir->open_flags, open_mode);
