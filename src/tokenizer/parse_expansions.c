@@ -29,7 +29,7 @@ static int	expand_qm(int *argc, char ***arg, char **str, const bool inquotes)
 	char	*temp;
 
 	get_env(NULL, NULL, NULL, &temp);
-	temp = ft_itoa((unsigned int) *temp);
+	temp = ft_itoa((unsigned char) *temp);
 	if (!temp)
 		clear_exit (1);
 	ft_strappend(*arg + *argc * !inquotes, temp);
