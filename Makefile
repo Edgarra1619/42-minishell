@@ -30,8 +30,7 @@ CFLAGS = -Wall -Wextra -Werror -gdwarf-4 $(INCFLAGS)
 INCFLAGS = -I $(INCDIR) -I $(LFTDIR)/include/
 LIBFLAGS = -lreadline
 
-VALGFLAGS = --track-origins=yes --leak-check=full --show-leak-kinds=all \
-			--suppressions=readline.supp
+VALGFLAGS = --track-origins=yes --leak-check=full
 
 OBJS = $(patsubst %.c, $(OBJDIR)%.o, $(SRCS))
 LFT = $(LFTDIR)/libft.a
