@@ -16,6 +16,7 @@
 
 #include <sys/wait.h>
 #include <stdlib.h>
+#include <signal.h>
 
 t_pipeline	*get_pipeline(void)
 {
@@ -64,7 +65,13 @@ void	wait_pipeline(t_pipeline *const pl)
 	if (WIFEXITED(status))
 		*env_status = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
+	{
+		if (WTERMSIG(status) == SIGINT)
+			ft_putchar_fd('\n', 2);
+		else if (WTERMSIG(status) == SIGQUIT)
+			ft_putstr_fd("Quit (core dumped)\n", 2);
 		*env_status = 128 + WTERMSIG(status);
+	}
 	else
 		*env_status = 1;
 }

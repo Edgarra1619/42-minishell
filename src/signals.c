@@ -36,11 +36,3 @@ void	prompt_handler(int sig)
 	rl_on_new_line();
 	rl_redisplay();
 }
-
-void	cmd_handler(int sig)
-{
-	if (sig == SIGINT)
-		write(1, "\n", 1);
-	else
-		write(1, "Quit (core dumped)\n", 19);
-}

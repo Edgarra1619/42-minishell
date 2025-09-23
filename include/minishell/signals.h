@@ -17,6 +17,5 @@ extern int	g_lastsignal;
 
 void	heredoc_handler(int sig);
 void	prompt_handler(int sig);
-void	cmd_handler(int sig);
 
 #endif
