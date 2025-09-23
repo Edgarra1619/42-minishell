@@ -17,8 +17,6 @@ int	parse_quotes(char **arg, char **str, bool dquote)
 		return (!*arg);
 	}
 	expand_str(arg, str);
-	if (!ft_strappend(arg, *str))
-		clear_exit(1);
 	*end = '"';
 	*str = end + 1;
 	return (!*arg);
