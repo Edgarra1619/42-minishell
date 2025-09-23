@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: edgribei <edgribei@student.42porto.com>    +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2025/09/23 14:47:25 by edgribei          #+#    #+#              #
+#    Updated: 2025/09/23 14:51:46 by edgribei         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 NAME = minishell
 SRCS = main.c error.c exit.c env.c env2.c var.c pipeline.c \
 	   cmd.c exec.c path.c fd.c signals.c \
@@ -44,8 +56,8 @@ $(OBJS): $(OBJDIR)%.o: $(SRCDIR)%.c
 	mkdir -p $(OBJDIR) $(OBJDIR)/builtins $(OBJDIR)/tokenizer
 	$(CC) $(CFLAGS) -o $@ -c $<
 
-test: $(NAME)
-	./$(NAME)
+$(LFT):
+	make -C $(LFTDIR)
 
 gprof: $(NAME)
 	./$(NAME)
@@ -61,5 +73,3 @@ gdb: $(NAME)
 vgdb: $(NAME)
 	valgrind $(VALGFLAGS) --vgdb=full --vgdb-error=0 ./$(NAME)
 
-$(LFT):
-	make -C $(LFTDIR)
