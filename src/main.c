@@ -36,6 +36,7 @@ int	main(__attribute__((unused)) int argc,
 		clear_pipeline(pl);
 		signal(SIGINT, prompt_handler);
 		pl->prompt = readline("$ ");
+		update_status_signal();
 		if (!pl->prompt)
 			break ;
 		if (pl->prompt[0])

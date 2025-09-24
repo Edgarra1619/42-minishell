@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <minishell/signals.h>
 #include <minishell/minishell.h>
 #include <minishell/env.h>
 #include <minishell/error.h>
@@ -29,6 +30,17 @@ void	remove_uninitialized_vars(void)
 			remove_var(*envp);
 		envp++;
 	}
+}
+
+void	update_status_signal(void)
+{
+	char	*status;
+
+	if (!g_lastsignal)
+		return ;
+	get_env(NULL, NULL, NULL, &status);
+	*status = 128 + g_lastsignal;
+	g_lastsignal = 0;
 }
 
 void	update_pwd(const bool print_output)
