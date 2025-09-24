@@ -10,12 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <minishell/env.h>
 #include <minishell/exit.h>
-#include <minishell/error.h>
 #include <minishell/fd.h>
 #include <minishell/signals.h>
 #include <minishell/tokenizer.h>
 #include <minishell/types.h>
+#include <minishell/error.h>
 
 #include <libft.h>
 
@@ -75,6 +76,25 @@ static int	get_redirfd(char **arg, char **str, int type)
 	return (fd);
 }
 
+static int	verify_redir_errors(const int argc, const t_redir *const redir)
+{
+	char	*status;
+
+	if (argc > 0 && redir->target_path[0][0])
+	{
+		get_env(NULL, NULL, NULL, &status);
+		*status = 1;
+		return (print_error(NULL, NULL, "ambiguous redirection"));
+	}
+	if (!redir->target_path[0] || !redir->target_path[0][0])
+	{
+		get_env(NULL, NULL, NULL, &status);
+		*status = 2;
+		return (print_syntax_error("incomplete redirection"));
+	}
+	return (0);
+}
+
 int	parse_redirs(char **arg, t_cmd *cmd)
 {
 	t_redir *const	redir = cmd->redirs + cmd->num_redirs++;
@@ -93,10 +113,8 @@ int	parse_redirs(char **arg, t_cmd *cmd)
 		if (cmd->cmd[-1] == ' ')
 			break ;
 	}
-	if (argc > 0 && redir->target_path[0][0])
-		return (print_syntax_error("ambiguous redirection"));
-	if (!redir->target_path[0] || !redir->target_path[0][0])
-		return (print_syntax_error("incomplete redirection"));
+	if (verify_redir_errors(argc, redir))
+		return (1);
 	if (redir->open_flags == OPEN_HEREDOC)
 		return (open_heredoc(&(redir->target_fd), redir->target_path[0]));
 	return (0);

@@ -18,7 +18,6 @@
 
 #include <stdbool.h>
 
-//TODO replace exits to clear_exits
 int	parse_next_special(char ***arg, int *argc, t_cmd *cmd, bool parse_spaces);
 
 int	tokenize_cmd(t_cmd *cmd)
