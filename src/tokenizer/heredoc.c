@@ -32,8 +32,8 @@ int	open_heredoc(int *const target_fd, const char *const eof)
 	char			*line;
 	int				error;
 
-	if (pipe(fds))
-		return (1);
+	if (stdinfd == -1 || pipe(fds))
+		error_exit(1);
 	signal(SIGINT, heredoc_handler);
 	error = 0;
 	while (!error)
@@ -47,7 +47,8 @@ int	open_heredoc(int *const target_fd, const char *const eof)
 	fds[0] = g_lastsignal;
 	update_status_signal();
 	signal(SIGINT, prompt_handler);
-	dup2(stdinfd, 0);
+	if (dup2(stdinfd, 0) == -1)
+		error_exit(1);
 	close(stdinfd);
 	return (fds[0] != 0);
 }
