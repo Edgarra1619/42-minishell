@@ -65,14 +65,13 @@ static int	get_redirfd(char **arg, char **str, int type)
 	{
 		if (*str != tmp)
 			append_args(arg, *str, tmp);
-		if (type == OPEN_HEREDOC || type == OPEN_READ
-			|| type == OPEN_RDWR)
+		if (type == OPEN_HEREDOC || type == OPEN_READ || type == OPEN_RDWR)
 			fd = 0;
 		if (type == OPEN_APPEND || type == OPEN_WRITE)
 			fd = 1;
 	}
-	*str = tmp + 1 + (type == OPEN_HEREDOC
-			|| type == OPEN_APPEND || type == OPEN_RDWR);
+	*str = tmp + 1
+		+ (type == OPEN_HEREDOC || type == OPEN_APPEND || type == OPEN_RDWR);
 	return (fd);
 }
 
