@@ -93,7 +93,7 @@ int	parse_redirs(char **arg, t_cmd *cmd)
 		if (cmd->cmd[-1] == ' ')
 			break ;
 	}
-	if (argc > 0)
+	if (argc > 0 && redir->target_path[0][0])
 		return (print_syntax_error("ambiguous redirection"));
 	if (!redir->target_path[0] || !redir->target_path[0][0])
 		return (print_syntax_error("incomplete redirection"));
