@@ -18,7 +18,7 @@ int	export_builtin(char **argv, const bool print_output)
 	int		ret;
 	char	**envp;
 
-	if (!argv[1] || !ft_strcmp(argv[1], "-p"))
+	if (!argv[1])
 	{
 		if (!print_output)
 			return (0);
