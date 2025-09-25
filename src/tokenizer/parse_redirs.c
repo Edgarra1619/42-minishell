@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <minishell/minishell.h>
 #include <minishell/env.h>
 #include <minishell/exit.h>
 #include <minishell/fd.h>
@@ -94,11 +95,22 @@ static int	verify_redir_errors(const int argc, const t_redir *const redir)
 	return (0);
 }
 
+static int	max_redirs_hit(void)
+{
+	char	*status;
+
+	get_env(NULL, NULL, NULL, &status);
+	*status = 1;
+	return (print_error(NULL, NULL, "too many redirections"));
+}
+
 int	parse_redirs(char **arg, t_cmd *cmd)
 {
 	t_redir *const	redir = cmd->redirs + cmd->num_redirs++;
 	int				argc;
 
+	if (cmd->num_redirs > REDIR_MAX)
+		return (max_redirs_hit());
 	redir->open_flags = get_redirtype(cmd->cmd);
 	argc = 0;
 	redir->source_fd = get_redirfd(arg, &cmd->cmd, redir->open_flags);
