@@ -40,7 +40,7 @@ int	parse_next_special(char ***arg, int *argc, t_cmd *cmd, bool parse_spaces)
 
 	tmp = find_next_special(cmd->cmd);
 	if (*tmp == '<' || *tmp == '>')
-		return (parse_redirs(*arg + *argc, cmd));
+		return (parse_redir(*arg + *argc, cmd));
 	if (tmp != cmd->cmd && append_args(*arg + *argc, cmd->cmd, tmp))
 		clear_exit(1);
 	cmd->cmd = tmp + (*tmp != '\0');

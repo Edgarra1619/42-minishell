@@ -26,6 +26,6 @@ char	*find_next_special(char *str);
 int		parse_whtspc(int *argc, char ***arg, char **str);
 int		parse_quotes(char **arg, char **str, bool dquote);
 int		parse_expans(int *argc, char ***arg, char **str, bool inquotes);
-int		parse_redirs(char **arg, t_cmd *cmd);
+int		parse_redir(char **arg, t_cmd *cmd);
 
 #endif

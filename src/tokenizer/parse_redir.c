@@ -104,13 +104,14 @@ static int	max_redirs_hit(void)
 	return (print_error(NULL, NULL, "too many redirections"));
 }
 
-int	parse_redirs(char **arg, t_cmd *cmd)
+int	parse_redir(char **arg, t_cmd *cmd)
 {
-	t_redir *const	redir = cmd->redirs + cmd->num_redirs++;
+	t_redir *const	redir = cmd->redirs + cmd->num_redirs;
 	int				argc;
 
-	if (cmd->num_redirs > REDIR_MAX)
+	if (cmd->num_redirs == REDIR_MAX)
 		return (max_redirs_hit());
+	cmd->num_redirs++;
 	redir->open_flags = get_redirtype(cmd->cmd);
 	argc = 0;
 	redir->source_fd = get_redirfd(arg, &cmd->cmd, redir->open_flags);
