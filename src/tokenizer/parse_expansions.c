@@ -59,8 +59,9 @@ static void	expand_var(char **value, int *argc, char ***arg)
 	next = ft_strchr(*value, ' ');
 	while (next)
 	{
-		if (append_args(*arg + *argc, *value, next))
-			clear_exit (1);
+		if (*value != next)
+			if (append_args(*arg + *argc, *value, next))
+				clear_exit (1);
 		parse_whtspc(argc, arg, &*value);
 		*value = next + 1;
 		next = ft_strchr(*value, ' ');

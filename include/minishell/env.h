@@ -23,6 +23,7 @@ int		validate_var(const char *var, bool print_output);
 int		is_valid_key(const char *var);
 int		remove_var(char *key);
 void	remove_uninitialized_vars(void);
+void	update_status_signal(void);
 void	update_pwd(bool print_output);
 void	update_shlvl(int add, bool print_output);
 

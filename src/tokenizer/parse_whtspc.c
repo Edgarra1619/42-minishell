@@ -21,7 +21,7 @@ int	parse_whtspc(int *argc, char ***arg, char **str)
 
 	while (ft_isspace(**str))
 		(*str)++;
-	if (!((*arg)[*argc]))
+	if (!((*arg)[*argc]) || !(((*arg)[*argc][0])))
 		return (0);
 	(*argc)++;
 	new = ft_realloc(*arg, sizeof(char *) * (*argc + 1),

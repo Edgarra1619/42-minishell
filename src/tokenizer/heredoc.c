@@ -11,9 +11,10 @@
 /* ************************************************************************** */
 
 #include <minishell/signals.h>
-#include <minishell/error.h>
+#include <minishell/env.h>
 #include <minishell/tokenizer.h>
 #include <minishell/exit.h>
+#include <minishell/error.h>
 
 #include <libft.h>
 
@@ -22,8 +23,37 @@
 #include <stdlib.h>
 #include <signal.h>
 
-static
-int	heredoc_parse_line(const int fd, char *input, const char *const eof)
+static int	heredoc_parse_line(int fd, char *input, const char *eof);
+
+int	open_heredoc(int *const target_fd, const char *const eof)
+{
+	const int		stdinfd = dup(0);
+	int				fds[2];
+	char			*line;
+	int				error;
+
+	if (stdinfd == -1 || pipe(fds))
+		error_exit(1);
+	signal(SIGINT, heredoc_handler);
+	error = 0;
+	while (!error)
+	{
+		line = readline("> ");
+		error = heredoc_parse_line(fds[1], line, eof);
+		free(line);
+	}
+	close(fds[1]);
+	*target_fd = fds[0];
+	fds[0] = g_lastsignal;
+	update_status_signal();
+	signal(SIGINT, prompt_handler);
+	if (dup2(stdinfd, 0) == -1)
+		error_exit(1);
+	close(stdinfd);
+	return (fds[0] != 0);
+}
+
+static int	heredoc_parse_line(const int fd, char *input, const char *const eof)
 {
 	char	*line;
 
@@ -43,31 +73,4 @@ int	heredoc_parse_line(const int fd, char *input, const char *const eof)
 	ft_putendl_fd(line, fd);
 	free(line);
 	return (0);
-}
-
-int	open_heredoc(int *const target_fd, const char *const eof)
-{
-	const int		stdinfd = dup(0);
-	int				fds[2];
-	char			*line;
-	int				error;
-
-	if (pipe(fds))
-		return (1);
-	signal(SIGINT, heredoc_handler);
-	error = 0;
-	while (!error)
-	{
-		line = readline("> ");
-		error = heredoc_parse_line(fds[1], line, eof);
-		free(line);
-	}
-	close(fds[1]);
-	*target_fd = fds[0];
-	fds[0] = g_lastsignal;
-	g_lastsignal = 0;
-	signal(SIGINT, prompt_handler);
-	dup2(stdinfd, 0);
-	close(stdinfd);
-	return (fds[0] != 0);
 }
