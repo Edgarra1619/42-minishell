@@ -39,8 +39,12 @@ int	tokenize_pipeline(t_pipeline *pl)
 	pl->cmds = split_cmds(pl->prompt, pl->num_cmds);
 	i = -1;
 	while (++i < pl->num_cmds)
+	{
+		pl->cmds[i].pipes[0].source_fd = -1;
+		pl->cmds[i].pipes[1].source_fd = -1;
 		if (tokenize_cmd(pl->cmds + i))
 			return (1);
+	}
 	return (0);
 }
 

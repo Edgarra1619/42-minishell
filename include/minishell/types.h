@@ -41,6 +41,7 @@ typedef struct s_cmd
 	char	path[PATH_MAX];
 	char	**argv;
 	int		num_redirs;
+	t_redir	pipes[2];
 	t_redir	redirs[REDIR_MAX];
 	pid_t	pid;
 }	t_cmd;

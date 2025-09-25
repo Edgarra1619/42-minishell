@@ -24,6 +24,8 @@ void	redirect_fd(t_redir *const redir)
 {
 	const static mode_t	open_mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
 
+	if (redir->source_fd == -1)
+		return ;
 	if (redir->target_path && redir->open_flags != OPEN_HEREDOC
 		&& *(redir->target_path))
 	{

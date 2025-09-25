@@ -29,6 +29,8 @@ void	fork_cmd(t_cmd *const cmd)
 		error_exit(1);
 	if (cmd->pid > 0)
 		return ;
+	redirect_fd(cmd->pipes);
+	redirect_fd(cmd->pipes + 1);
 	i = -1;
 	while (++i < cmd->num_redirs)
 		redirect_fd(&cmd->redirs[i]);
@@ -41,8 +43,8 @@ void	pipe_cmds(t_cmd *const cmd1, t_cmd *const cmd2)
 
 	if (pipe(fds))
 		error_exit(1);
-	cmd1->redirs[cmd1->num_redirs++] = (t_redir){1, fds[1], NULL, 0};
-	cmd2->redirs[cmd2->num_redirs++] = (t_redir){0, fds[0], NULL, 0};
+	cmd1->pipes[1] = (t_redir){1, fds[1], NULL, 0};
+	cmd2->pipes[0] = (t_redir){0, fds[0], NULL, 0};
 }
 
 bool	is_cmd_builtin(const char *const name)
