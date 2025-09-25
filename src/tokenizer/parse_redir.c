@@ -80,7 +80,8 @@ static int	verify_redir_errors(const int argc, const t_redir *const redir)
 {
 	char	*status;
 
-	if (argc > 0 && redir->target_path[0][0])
+	if (argc > 0 && redir->target_path[0][0] &&
+		redir->target_path[1] && redir->target_path[1][0])
 	{
 		get_env(NULL, NULL, NULL, &status);
 		*status = 1;
