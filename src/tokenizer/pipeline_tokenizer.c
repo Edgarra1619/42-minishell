@@ -6,7 +6,7 @@
 /*   By: vde-albu <vde-albu@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 14:48:23 by vde-albu          #+#    #+#             */
-/*   Updated: 2025/09/23 14:48:24 by vde-albu         ###   ########.fr       */
+/*   Updated: 2025/09/25 16:22:15 by edgribei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 
 #include <stdbool.h>
 
-static bool		is_prompt_empty(const char *prompt);
 static int		count_cmds(const char *prompt);
 static t_cmd	*split_cmds(char *prompt, int num_cmds);
 
@@ -26,9 +25,6 @@ int	tokenize_pipeline(t_pipeline *pl)
 	char	*status;
 	int		i;
 
-	pl->num_cmds = 0;
-	if (is_prompt_empty(pl->prompt))
-		return (1);
 	if (verify_prompt_syntax(pl->prompt))
 	{
 		get_env(NULL, NULL, NULL, &status);
@@ -46,13 +42,6 @@ int	tokenize_pipeline(t_pipeline *pl)
 			return (1);
 	}
 	return (0);
-}
-
-static bool	is_prompt_empty(const char *prompt)
-{
-	while (ft_isspace(*prompt))
-		prompt++;
-	return (!*prompt);
 }
 
 static int	count_cmds(const char *prompt)

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_redirs.c                                     :+:      :+:    :+:   */
+/*   parse_redir.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: edgribei <edgribei@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/23 14:47:41 by edgribei          #+#    #+#             */
-/*   Updated: 2025/09/23 14:47:42 by edgribei         ###   ########.fr       */
+/*   Created: 2025/09/25 16:10:53 by edgribei          #+#    #+#             */
+/*   Updated: 2025/09/25 16:48:23 by edgribei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@
 #include <minishell/error.h>
 
 #include <libft.h>
-
-int	parse_next_special(char ***arg, int *argc, t_cmd *cmd, bool parse_spaces);
 
 static int	get_redirtype(char *str)
 {

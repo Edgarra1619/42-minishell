@@ -36,15 +36,16 @@ int	main(__attribute__((unused)) int argc,
 		clear_pipeline(pl);
 		signal(SIGINT, prompt_handler);
 		pl->prompt = readline("$ ");
+		signal(SIGINT, SIG_IGN);
 		update_status_signal();
 		if (!pl->prompt)
 			break ;
-		if (pl->prompt[0])
-			add_history(pl->prompt);
+		if (is_prompt_empty(pl->prompt))
+			continue ;
+		add_history(pl->prompt);
 		if (tokenize_pipeline(pl))
 			continue ;
 		exec_pipeline(pl);
-		signal(SIGINT, SIG_IGN);
 		wait_pipeline(pl);
 	}
 	ft_putstr_fd("exit\n", 2);

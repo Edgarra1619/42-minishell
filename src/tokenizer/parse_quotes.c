@@ -23,10 +23,11 @@ int	parse_quotes(char **arg, char **str, bool dquote)
 	*end = 0;
 	if (!dquote)
 	{
-		ft_strappend(arg, *str);
+		if (!ft_strappend(arg, *str))
+			clear_exit(1);
 		*end = '\'';
 		*str = end + 1;
-		return (!*arg);
+		return (0);
 	}
 	expand_str(arg, str);
 	*end = '"';

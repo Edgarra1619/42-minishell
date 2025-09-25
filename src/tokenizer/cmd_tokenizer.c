@@ -18,19 +18,17 @@
 
 #include <stdbool.h>
 
-int	parse_next_special(char ***arg, int *argc, t_cmd *cmd, bool parse_spaces);
-
 int	tokenize_cmd(t_cmd *cmd)
 {
-	int		argc;
+	int	argc;
 
 	argc = 0;
-	if (!cmd->cmd)
-		return (0);
 	cmd->argv = ft_calloc(sizeof(char *), argc + 2);
 	while (*(cmd->cmd))
+	{
 		if (parse_next_special(&(cmd->argv), &argc, cmd, true))
 			return (1);
+	}
 	return (0);
 }
 
@@ -72,7 +70,7 @@ char	*find_next_special(char *str)
 {
 	while (*str)
 	{
-		if (*str == '$' || ft_isspace(*str) || *str == '\'' || *str == '"'
+		if (*str == '$' || *str == ' ' || *str == '\'' || *str == '"'
 			|| *str == '<' || *str == '>')
 			return (str);
 		str++;

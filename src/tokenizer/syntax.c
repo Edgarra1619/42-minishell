@@ -6,7 +6,7 @@
 /*   By: vde-albu <vde-albu@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 14:47:48 by vde-albu          #+#    #+#             */
-/*   Updated: 2025/09/23 14:48:16 by vde-albu         ###   ########.fr       */
+/*   Updated: 2025/09/25 16:36:30 by edgribei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,13 @@
 static int	verify_cmd_syntax(const char **cmd);
 static int	verify_redir_syntax(const char **redir);
 static int	verify_quote_syntax(const char **quote);
+
+bool	is_prompt_empty(const char *prompt)
+{
+	while (ft_isspace(*prompt))
+		prompt++;
+	return (!*prompt);
+}
 
 int	verify_prompt_syntax(const char *prompt)
 {

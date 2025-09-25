@@ -46,7 +46,7 @@ int	open_heredoc(int *const target_fd, const char *const eof)
 	*target_fd = fds[0];
 	fds[0] = g_lastsignal;
 	update_status_signal();
-	signal(SIGINT, prompt_handler);
+	signal(SIGINT, SIG_IGN);
 	if (dup2(stdinfd, 0) == -1)
 		error_exit(1);
 	close(stdinfd);

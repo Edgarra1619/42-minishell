@@ -6,7 +6,7 @@
 /*   By: edgribei <edgribei@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 14:56:24 by edgribei          #+#    #+#             */
-/*   Updated: 2025/09/23 14:56:27 by edgribei         ###   ########.fr       */
+/*   Updated: 2025/09/25 16:47:08 by edgribei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 
 # include <stdbool.h>
 
+bool	is_prompt_empty(const char *prompt);
 int		tokenize_pipeline(t_pipeline *pl);
 int		tokenize_cmd(t_cmd *cmd);
 int		verify_prompt_syntax(const char *prompt);
@@ -27,5 +28,7 @@ int		parse_whtspc(int *argc, char ***arg, char **str);
 int		parse_quotes(char **arg, char **str, bool dquote);
 int		parse_expans(int *argc, char ***arg, char **str, bool inquotes);
 int		parse_redir(char **arg, t_cmd *cmd);
+int		parse_next_special(char ***arg, int *argc, t_cmd *cmd,
+			bool parse_spaces);
 
 #endif

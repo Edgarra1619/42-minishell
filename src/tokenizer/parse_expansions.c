@@ -20,7 +20,7 @@
 
 void	expand_str(char **line, char **input)
 {
-	char		*tmp;
+	char	*tmp;
 
 	tmp = ft_strchr(*input, '$');
 	while (tmp)
@@ -77,23 +77,24 @@ int	parse_expans(int *argc, char ***arg, char **str, bool inquotes)
 
 	fake_argc = 0;
 	if (!argc)
-		argc = &fake_argc;
+		argc = (int *)&fake_argc;
 	if (**str == '?')
 		return (expand_qm(argc, arg, str, inquotes));
 	if (!(**str == '_' || ft_isalpha(**str)))
 	{
 		if (!ft_strappend(*arg + *argc * !inquotes, "$"))
 			clear_exit(1);
-		else
-			return (0);
+		return (0);
 	}
 	value = get_var(*str);
 	while (**str == '_' || ft_isalnum(**str))
 		(*str)++;
 	if (!value)
 		return (0);
+	if (inquotes && !ft_strappend(*arg + *argc, value))
+		clear_exit(1);
 	if (inquotes)
-		return (!ft_strappend(*arg + *argc, value));
+		return (0);
 	expand_var(&value, argc, arg);
 	return (0);
 }
