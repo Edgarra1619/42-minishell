@@ -57,7 +57,7 @@ static int	find_cmd_path(const char *const cmd, char *const buffer)
 		ft_strlcat(buffer, cmd, PATH_MAX);
 		if (!validate_file_path(buffer))
 			return (0);
-		path_var += path_len + 1;
+		path_var += path_len + !!(path_var[path_len]);
 	}
 	return (1);
 }

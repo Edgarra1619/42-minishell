@@ -55,7 +55,7 @@ char	*get_var(const char *const key)
 	{
 		if (key_len == ft_strlen_delim(*envp, '=')
 			&& !ft_strncmp(key, *envp, key_len))
-			return (*envp + key_len + 1);
+			return (*envp + key_len + ((*envp)[key_len] == '='));
 		envp++;
 	}
 	return (NULL);
