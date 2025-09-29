@@ -32,6 +32,10 @@ int	export_builtin(char **argv, const bool print_output)
 	}
 	ret = 0;
 	while (*++argv)
+	{
+		if (!ft_strchr(*argv, '=') && get_var(*argv))
+			continue ;
 		ret |= set_var(*argv, print_output);
+	}
 	return (ret);
 }
