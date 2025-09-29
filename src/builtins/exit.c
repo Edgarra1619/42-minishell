@@ -15,7 +15,7 @@
 #include <minishell/exit.h>
 #include <libft.h>
 
-static bool is_num(const char *str);
+static bool	is_num(const char *str);
 
 int	exit_builtin(char **argv, const bool print_output, const bool is_single_cmd)
 {
@@ -45,7 +45,7 @@ int	exit_builtin(char **argv, const bool print_output, const bool is_single_cmd)
 	return (1);
 }
 
-static bool is_num(const char *str)
+static bool	is_num(const char *str)
 {
 	while (ft_isspace(*str))
 		str++;
